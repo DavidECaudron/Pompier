@@ -33,7 +33,6 @@ public class InteractableObject : MonoBehaviour
         if (other.gameObject.GetComponent<PlayerController>() != null)
         {
             player = other.gameObject;
-            Debug.Log("isInRange");
             isInRange = true;
         }
     }
@@ -41,7 +40,6 @@ public class InteractableObject : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerController>() != null)
         {
-            Debug.Log("isOffRange");
             isInRange = false;
         }
     }
