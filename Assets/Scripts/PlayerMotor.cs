@@ -15,7 +15,7 @@ public class PlayerMotor : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PerformMovement();
+        PerformVelocity();
         PerformRotation();
     }
 
@@ -29,7 +29,7 @@ public class PlayerMotor : MonoBehaviour
         rotation = _rotation;
     }
 
-    private void PerformMovement()
+    private void PerformVelocity()
     {
         if (velocity != Vector3.zero)
         {
