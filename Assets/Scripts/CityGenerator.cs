@@ -14,6 +14,8 @@ public class CityGenerator
         map[WIDTH/2, HEIGHT/2] = EnumElementCity.GROUND;
 
         CityGenerator.generateStreets(map, new Vector2Int(WIDTH/2, HEIGHT/2));
+        
+        CityGenerator.generateHouses(map);
 
         return map;
     }
@@ -25,5 +27,44 @@ public class CityGenerator
             map[center.x, index] = EnumElementCity.STREET;
             map[index, center.y] = EnumElementCity.STREET;
         }
+    }
+
+    private static void generateHouses(EnumElementCity [,] map)
+    {
+        for (int x = 0; x < WIDTH; x++)
+        {
+            for (int y = 0; y < HEIGHT; y++)
+            {
+                EnumElementCity current = map[x,y];
+
+                if(current == EnumElementCity.STREET)
+                {
+                    if(CityGenerator.inRangeMap(x+1, WIDTH) && map[x+1, y] == EnumElementCity.GROUND)
+                    {
+                        map[x+1, y] = EnumElementCity.HOUSE;
+                    }
+
+                    if(CityGenerator.inRangeMap(x-1, WIDTH) && map[x-1, y] == EnumElementCity.GROUND)
+                    {
+                        map[x-1, y] = EnumElementCity.HOUSE;
+                    }
+
+                    if(CityGenerator.inRangeMap(y+1, HEIGHT) && map[x, y+1] == EnumElementCity.GROUND)
+                    {
+                        map[x, y+1] = EnumElementCity.HOUSE;
+                    }
+
+                    if(CityGenerator.inRangeMap(y-1, HEIGHT) && map[x, y-1] == EnumElementCity.GROUND)
+                    {
+                        map[x, y-1] = EnumElementCity.HOUSE;
+                    }
+                }
+            }
+        }
+    }
+
+    private static bool inRangeMap(int index, int LEN)
+    {
+        return index >= 0 && index < LEN;
     }
 }
