@@ -43,3 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08777648e35b8646991d856c3fd810e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HouseMat: {fileID: 2100000, guid: 80283d4c5627b0046867a1bdeb2b73ad, type: 2}
+  StreetMat: {fileID: 2100000, guid: 5d875d8098e290e4f8e8bf640c032b98, type: 2}
+  GroundMat: {fileID: 2100000, guid: 8c1d0ba81d902124b8393a166f565767, type: 2}
+  width: 50
+  height: 50

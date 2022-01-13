@@ -1,69 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CityGenerator
 {
-    public const int WIDTH = 10;
-    public const int HEIGHT = 10;
-
-    public static EnumElementCity[,] GeneratorMap()
+    public static EnumElementCity[,] GeneratorMap(int width, int height)
     {
-        EnumElementCity [,] map = new EnumElementCity[WIDTH, HEIGHT];
+        EnumElementCity[,] map = new EnumElementCity[width, height];
 
-        map[WIDTH/2, HEIGHT/2] = EnumElementCity.GROUND;
+        map[width / 2, height / 2] = EnumElementCity.GROUND;
 
-        CityGenerator.generateStreets(map, new Vector2Int(WIDTH/2, HEIGHT/2));
-        
-        CityGenerator.generateHouses(map);
+        CityGenerator.GenerateStreets(map, new Vector2Int(width / 2, height / 2), width);
+
+        CityGenerator.GenerateHouses(map, width, height);
 
         return map;
     }
 
-    private static void generateStreets(EnumElementCity [,] map, Vector2Int center)
+    private static void GenerateStreets(EnumElementCity[,] map, Vector2Int center, int width)
     {
-        for (int index = 0; index < WIDTH; index++)
+        for (int index = 0; index < width; index++)
         {
             map[center.x, index] = EnumElementCity.STREET;
             map[index, center.y] = EnumElementCity.STREET;
         }
     }
 
-    private static void generateHouses(EnumElementCity [,] map)
+    private static void GenerateHouses(EnumElementCity[,] map, int width, int height)
     {
-        for (int x = 0; x < WIDTH; x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < HEIGHT; y++)
+            for (int y = 0; y < height; y++)
             {
-                EnumElementCity current = map[x,y];
+                EnumElementCity current = map[x, y];
 
-                if(current == EnumElementCity.STREET)
+                if (current == EnumElementCity.STREET)
                 {
-                    if(CityGenerator.inRangeMap(x+1, WIDTH) && map[x+1, y] == EnumElementCity.GROUND)
+                    if (CityGenerator.InRangeMap(x + 1, width) && map[x + 1, y] == EnumElementCity.GROUND)
                     {
-                        map[x+1, y] = EnumElementCity.HOUSE;
+                        map[x + 1, y] = EnumElementCity.HOUSE;
                     }
 
-                    if(CityGenerator.inRangeMap(x-1, WIDTH) && map[x-1, y] == EnumElementCity.GROUND)
+                    if (CityGenerator.InRangeMap(x - 1, width) && map[x - 1, y] == EnumElementCity.GROUND)
                     {
-                        map[x-1, y] = EnumElementCity.HOUSE;
+                        map[x - 1, y] = EnumElementCity.HOUSE;
                     }
 
-                    if(CityGenerator.inRangeMap(y+1, HEIGHT) && map[x, y+1] == EnumElementCity.GROUND)
+                    if (CityGenerator.InRangeMap(y + 1, height) && map[x, y + 1] == EnumElementCity.GROUND)
                     {
-                        map[x, y+1] = EnumElementCity.HOUSE;
+                        map[x, y + 1] = EnumElementCity.HOUSE;
                     }
 
-                    if(CityGenerator.inRangeMap(y-1, HEIGHT) && map[x, y-1] == EnumElementCity.GROUND)
+                    if (CityGenerator.InRangeMap(y - 1, height) && map[x, y - 1] == EnumElementCity.GROUND)
                     {
-                        map[x, y-1] = EnumElementCity.HOUSE;
+                        map[x, y - 1] = EnumElementCity.HOUSE;
                     }
                 }
             }
         }
     }
 
-    private static bool inRangeMap(int index, int LEN)
+    private static bool InRangeMap(int index, int LEN)
     {
         return index >= 0 && index < LEN;
     }
