@@ -92,7 +92,7 @@ public class CityGenerator
     }
 
 
-    private static bool InRangeMap(int index, int LEN)
+    public static bool InRangeMap(int index, int LEN)
     {
         return index >= 0 && index < LEN;
     }

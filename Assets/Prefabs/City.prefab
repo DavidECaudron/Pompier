@@ -43,8 +43,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08777648e35b8646991d856c3fd810e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HouseMat: {fileID: 2100000, guid: 80283d4c5627b0046867a1bdeb2b73ad, type: 2}
-  StreetMat: {fileID: 2100000, guid: 5d875d8098e290e4f8e8bf640c032b98, type: 2}
-  GroundMat: {fileID: 2100000, guid: 8c1d0ba81d902124b8393a166f565767, type: 2}
-  width: 50
-  height: 50
+  houseMat: {fileID: 2100000, guid: 5d875d8098e290e4f8e8bf640c032b98, type: 2}
+  cornerHouseMat: {fileID: 2100000, guid: 523719795c8aaa34bbabeb16858e8f11, type: 2}
+  streetMat: {fileID: 2100000, guid: 80283d4c5627b0046867a1bdeb2b73ad, type: 2}
+  groundMat: {fileID: 2100000, guid: 8c1d0ba81d902124b8393a166f565767, type: 2}
+  housePrefabs:
+  - {fileID: 8537324661849899433, guid: 4c9b5617dfe3f0f45aa450b1226c8cba, type: 3}
+  cornerHousePrefabs:
+  - {fileID: 6909062750042841956, guid: 74c2b8a73bc168e4594212256db60765, type: 3}
+  width: 10
+  height: 10
+  scale: 20
