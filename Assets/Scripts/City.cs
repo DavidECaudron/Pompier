@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class City : MonoBehaviour
 {
-    [SerializeField] Material HouseMat;
-    [SerializeField] Material StreetMat;
-    [SerializeField] Material GroundMat;
+    [SerializeField] Material houseMat;
+    [SerializeField] Material cornerHouseMat;
+    [SerializeField] Material streetMat;
+    [SerializeField] Material groundMat;
+
+    [SerializeField] GameObject[] housePrefabs;
+    [SerializeField] GameObject[] cornerHousePrefabs;
 
     [SerializeField] [Min(10)] int width = 10;
     [SerializeField] [Min(10)] int height = 10;
@@ -59,17 +63,33 @@ public class City : MonoBehaviour
                 switch (map[x, y])
                 {
                     case EnumElementCity.GROUND:
-                        plane.GetComponent<MeshRenderer>().material = GroundMat;
+                        plane.GetComponent<MeshRenderer>().material = groundMat;
                         break;
                     case EnumElementCity.STREET:
-                        plane.GetComponent<MeshRenderer>().material = StreetMat;
+                        plane.GetComponent<MeshRenderer>().material = streetMat;
                         break;
                     case EnumElementCity.HOUSE:
-                        plane.GetComponent<MeshRenderer>().material = HouseMat;
+                        plane.GetComponent<MeshRenderer>().material = houseMat;
+
+                        GameObject houseInstance = InstantiateHousePrefab(housePrefabs, new Vector3(x, 0, y));
                         break;
+
+                    case EnumElementCity.CORNER_HOUSE:
+                        plane.GetComponent<MeshRenderer>().material = cornerHouseMat;
+
+                        GameObject cornerHouseInstance = InstantiateHousePrefab(cornerHousePrefabs, new Vector3(x, 0, y));
+                        break;
+
                 }
+
             }
         }
+    }
+
+    private GameObject InstantiateHousePrefab(GameObject[] prefabs, Vector3 pos)
+    {
+        int index = Random.Range(0, prefabs.Length);
+        return Instantiate(prefabs[index], pos, Quaternion.identity, gameObject.transform);
     }
 
 }

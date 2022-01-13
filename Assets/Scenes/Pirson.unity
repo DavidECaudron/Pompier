@@ -186,6 +186,26 @@ PrefabInstance:
       propertyPath: height
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7690560370077799555, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
+      propertyPath: housePrefabs.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690560370077799555, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
+      propertyPath: housePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 4859020667051477943, guid: b8de26c57956d2c47a682e922663b124, type: 3}
+    - target: {fileID: 7690560370077799555, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
+      propertyPath: housePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 3151380249263197315, guid: aeabe3b859ae65a4fb1c8dd65c2216b4, type: 3}
+    - target: {fileID: 7690560370077799555, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
+      propertyPath: housePrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8644834706472123070, guid: 82b926af5c569cc4196162c716a2c820, type: 3}
+    - target: {fileID: 7690560370077799555, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
+      propertyPath: housePrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 3735297499198603784, guid: 08da3b192936a0f47817d31fbcee6f78, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
 --- !u!1 &705507993
