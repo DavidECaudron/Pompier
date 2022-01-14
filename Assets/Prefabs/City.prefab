@@ -48,9 +48,9 @@ MonoBehaviour:
   streetMat: {fileID: 2100000, guid: 80283d4c5627b0046867a1bdeb2b73ad, type: 2}
   groundMat: {fileID: 2100000, guid: 8c1d0ba81d902124b8393a166f565767, type: 2}
   housePrefabs:
-  - {fileID: 3735297499198603784, guid: 08da3b192936a0f47817d31fbcee6f78, type: 3}
+  - {fileID: 8537324661849899433, guid: 4c9b5617dfe3f0f45aa450b1226c8cba, type: 3}
   cornerHousePrefabs:
-  - {fileID: 4859020667051477943, guid: 6f90dfc232a9cf546af6597583a4933f, type: 3}
+  - {fileID: 6909062750042841956, guid: 74c2b8a73bc168e4594212256db60765, type: 3}
   width: 10
   height: 10
-  scale: 20
+  scale: 1
