@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
-    public enum ControlType { HumanInput, AI }
-    public ControlType controlType = ControlType.HumanInput;
+    [SerializeField] private enum ControlType { HumanInput, AI }
+    [SerializeField] private ControlType controlType = ControlType.HumanInput;
+
     private TruckController truckController;
 
     void Awake()

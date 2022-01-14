@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Wheel : MonoBehaviour
 {
-    public bool steer;
-    public bool invertSteer;
-    public bool power;
+    [SerializeField] private bool steer;
+    [SerializeField] private bool invertSteer;
+    [SerializeField] private bool power;
+    [SerializeField] private WheelCollider wheelCollider;
+
     public float SteerAngle { get; set; } 
     public float Torque { get; set; }
-    public WheelCollider wheelCollider;
+    
     private Transform wheelTransform;
 
     void Start()
