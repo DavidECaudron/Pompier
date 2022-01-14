@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &18445457
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -526,6 +526,10 @@ PrefabInstance:
     - target: {fileID: 3006701726948658420, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
       propertyPath: m_Name
       value: City
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006701726948658420, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7409824394540582569, guid: e8ce10bc8efd66641bb361e3dde0467b, type: 3}
       propertyPath: m_RootOrder
