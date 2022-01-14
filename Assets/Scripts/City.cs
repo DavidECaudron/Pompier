@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class City : MonoBehaviour
 {
@@ -80,12 +81,13 @@ public class City : MonoBehaviour
 
                     case EnumElementCity.CORNER_HOUSE:
                         elementCity.GetComponent<MeshRenderer>().material = cornerHouseMat;
-
-                        GameObject cornerHouseInstance = InstantiateHousePrefab(cornerHousePrefabs, new Vector3(x*scale, 0, y*scale), 0f);
+                        
+                        Vector3 rot = GetRotationForCornerHouse(new Vector2Int(x, y));
+                    
+                        GameObject cornerHouseInstance = Instantiate(cornerHousePrefabs[0], new Vector3(x*scale, 0, y*scale), Quaternion.Euler(0,0,0), gameObject.transform);
+                        cornerHouseInstance.transform.LookAt(rot); 
                         break;
-
                 }
-
             }
         }
     }
@@ -96,6 +98,30 @@ public class City : MonoBehaviour
         return Instantiate(prefabs[index], pos, Quaternion.AngleAxis(rotationAngle, Vector3.up), gameObject.transform);
     }
 
+    private Vector3 GetRotationForCornerHouse(Vector2Int coord)
+    {
+        List<Vector2Int> coordinates = CityGenerator.getCroos(map, coord);
+
+        List<Vector2Int> coordinatesStreet = new List<Vector2Int>();
+
+        foreach (var coordinate in coordinates)
+        {
+            if(map[coordinate.x, coordinate.y] == EnumElementCity.STREET)
+            {
+                coordinatesStreet?.Add(coordinate);
+            }
+        }
+        
+        switch (coordinatesStreet.Count)
+        {
+            case 2:
+                Vector2Int offset = coordinatesStreet[1] - coordinatesStreet[0];
+                Vector2Int coorner = coord + (coordinatesStreet[1] - coord) + (coordinatesStreet[0] - coord);
+                return new Vector3(coorner.x, 0, coorner.y);
+            default:
+                return new Vector3(coord.x, 0, coord.y);
+        }
+    }
 
     private float GetRotationForHouse(Vector2Int coord)
     {
