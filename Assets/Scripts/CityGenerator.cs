@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CityGenerator
 {
@@ -91,9 +92,45 @@ public class CityGenerator
         }
     }
 
-
     public static bool InRangeMap(int index, int LEN)
     {
         return index >= 0 && index < LEN;
     }
+
+    public static List<Vector2Int> getDiagonalCroos(EnumElementCity [,] map, Vector2Int position)
+    {
+        var indexs = new [] {(1,1), (1,-1), (-1,-1), (-1,1)};
+
+        return getTiles(map, position, indexs);
+    }
+
+    public static List<Vector2Int> getCroos(EnumElementCity [,] map, Vector2Int position)
+    {
+        var indexs = new [] {(0,1), (1,0), (0,-1), (-1,0)};
+
+        return getTiles(map, position, indexs);
+    }
+
+    public static List<Vector2Int> getArround(EnumElementCity [,] map, Vector2Int position)
+    {
+        var indexs = new [] {(0,1), (1,1), (1,0), (1,-1), (0,-1), (-1,-1), (-1,0), (-1,1)};
+
+        return getTiles(map, position, indexs);
+    }
+
+    private static List<Vector2Int> getTiles(EnumElementCity [,] map, Vector2Int position,(int, int) [] indexs)
+    {
+        var elementsArround = new List<Vector2Int>();
+
+        foreach (var index in indexs)
+        {
+            var index_x = Mathf.Clamp(position.x + index.Item1, 0, map.GetLength(0));
+            var index_y = Mathf.Clamp(position.y + index.Item2, 0, map.GetLength(1));
+
+            elementsArround.Add(new Vector2Int(index_x, index_y));
+        }
+
+        return elementsArround;
+    }
+    
 }
