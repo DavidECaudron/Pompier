@@ -760,7 +760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5128648172135310257, guid: 4517265438c04c549b0545d9c68a5bd2, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5128648172135310257, guid: 4517265438c04c549b0545d9c68a5bd2, type: 3}
       propertyPath: rotationSpeed
@@ -770,26 +770,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5128648172135310259, guid: 4517265438c04c549b0545d9c68a5bd2, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 5128648172135310262, guid: 4517265438c04c549b0545d9c68a5bd2, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4517265438c04c549b0545d9c68a5bd2, type: 3}
---- !u!1 &5128648171581024499 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5128648172135310258, guid: 4517265438c04c549b0545d9c68a5bd2, type: 3}
-  m_PrefabInstance: {fileID: 5128648171581024498}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5128648171581024500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5128648171581024499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0cca966df2f8fa4884add0c2d5529ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
