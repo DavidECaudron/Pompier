@@ -16,11 +16,11 @@ public class LadderControl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Keypad4))
         {
-            gameObject.transform.Rotate(new Vector3(0,1,0),-1.0f);
+            gameObject.transform.Rotate(new Vector3(0,1,0),-0.1f);
         }
         if (Input.GetKey(KeyCode.Keypad6))
         {
-            gameObject.transform.Rotate(new Vector3(0,1,0),1.0f);
+            gameObject.transform.Rotate(new Vector3(0,1,0),0.1f);
         }
         if (Input.GetKey(KeyCode.Keypad8) && (Vector3.Distance(ladder002.transform.position,gameObject.transform.position) < 5.5f))
         {
