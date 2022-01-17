@@ -7,6 +7,8 @@ public class CityGeneratorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        base.DrawDefaultInspector();
+
         City mapPreview = (City)target;
 
         if (GUILayout.Button("Generate"))
