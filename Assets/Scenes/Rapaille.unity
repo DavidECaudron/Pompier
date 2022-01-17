@@ -491,6 +491,8 @@ MonoBehaviour:
   ladder001: {fileID: 637378879}
   ladder002: {fileID: 1648004678}
   ladder003: {fileID: 1971678962}
+  _minAngle: 340
+  _maxAngle: 359
 --- !u!1 &450494054
 GameObject:
   m_ObjectHideFlags: 0
