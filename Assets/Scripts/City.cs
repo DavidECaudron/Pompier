@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class City : MonoBehaviour
 {
@@ -22,10 +23,26 @@ public class City : MonoBehaviour
 
     void Start()
     {
+        GenerateCity();
+    }
+
+    public void GenerateCity()
+    {
+        ResetCity();
+
         _map = CityGenerator.GeneratorMap(_width, _height);
 
         DebugShowMap();
         GenerateVisualMap();
+    }
+
+    private void ResetCity()
+    {
+        var tempList = transform.Cast<Transform>().ToList();
+        foreach (var child in tempList)
+        {
+            DestroyImmediate(child.gameObject);
+        }
     }
 
     private void DebugShowMap()
@@ -66,7 +83,7 @@ public class City : MonoBehaviour
                 GameObject elementCity = GameObject.CreatePrimitive(PrimitiveType.Plane);
                 elementCity.transform.parent = gameObject.transform;
                 elementCity.transform.localScale = new Vector3(.1f, .1f, .1f);
-                elementCity.transform.position = new Vector3(x*_scale, 0, y*_scale);
+                elementCity.transform.position = new Vector3(x * _scale, 0, y * _scale);
 
                 switch (_map[x, y])
                 {
@@ -79,16 +96,16 @@ public class City : MonoBehaviour
                     case EnumElementCity.HOUSE:
                         elementCity.GetComponent<MeshRenderer>().material = _houseMat;
 
-                        GameObject houseInstance = InstantiateHousePrefab(_housePrefabs, new Vector3(x*_scale, 0, y*_scale), GetRotationForHouse(new Vector2Int(x, y))) ;
+                        GameObject houseInstance = InstantiateHousePrefab(_housePrefabs, new Vector3(x * _scale, 0, y * _scale), GetRotationForHouse(new Vector2Int(x, y)));
                         break;
 
                     case EnumElementCity.CORNER_HOUSE:
                         elementCity.GetComponent<MeshRenderer>().material = _cornerHouseMat;
-                        
+
                         Vector3 rot = GetRotationForCornerHouse(new Vector2Int(x, y));
-                    
-                        GameObject cornerHouseInstance = Instantiate(_cornerHousePrefabs[0], new Vector3(x*_scale, 0, y*_scale), Quaternion.Euler(0,0,0), gameObject.transform);
-                        cornerHouseInstance.transform.LookAt(rot); 
+
+                        GameObject cornerHouseInstance = Instantiate(_cornerHousePrefabs[0], new Vector3(x * _scale, 0, y * _scale), Quaternion.Euler(0, 0, 0), gameObject.transform);
+                        cornerHouseInstance.transform.LookAt(rot);
                         break;
                 }
             }
@@ -109,12 +126,12 @@ public class City : MonoBehaviour
 
         foreach (Vector2Int coordinate in coordinates)
         {
-            if(_map[coordinate.x, coordinate.y] == EnumElementCity.STREET)
+            if (_map[coordinate.x, coordinate.y] == EnumElementCity.STREET)
             {
                 coordinatesStreet?.Add(coordinate);
             }
         }
-        
+
         switch (coordinatesStreet.Count)
         {
             case 2:
@@ -148,7 +165,7 @@ public class City : MonoBehaviour
 
         if (CityGenerator.InRangeMap(coord.y + 1, _height))
         {
-            if (_map[coord.x, coord.y+1] == EnumElementCity.STREET)
+            if (_map[coord.x, coord.y + 1] == EnumElementCity.STREET)
             {
                 return 90f;
             }
@@ -156,9 +173,9 @@ public class City : MonoBehaviour
 
         if (CityGenerator.InRangeMap(coord.y - 1, _height))
         {
-            if (_map[coord.x, coord.y-1] == EnumElementCity.STREET)
+            if (_map[coord.x, coord.y - 1] == EnumElementCity.STREET)
             {
-                return - 90;
+                return -90;
             }
         }
 
