@@ -12,9 +12,9 @@ public class LadderControl : MonoBehaviour
     }
     void Update()
     {
-        RightLeftLadder ();
-        ExtandRetractLadder ();
-        UpDownLadder ();
+        RightLeftLadder();
+        ExtandRetractLadder();
+        UpDownLadder();
     }
     private void RightLeftLadder()
     {
