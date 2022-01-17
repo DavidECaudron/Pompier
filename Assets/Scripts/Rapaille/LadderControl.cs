@@ -50,7 +50,7 @@ public class LadderControl : MonoBehaviour
     }
     private void UpDownLadder ()
     {
-        if (Input.GetKey(KeyCode.KeypadMinus) /*&& (ladder001.transform.rotation.x < 0)*/)
+        if (Input.GetKey(KeyCode.KeypadMinus))
         {
             ladder001.transform.Rotate(new Vector3(1,0,0),0.1f);
         }
