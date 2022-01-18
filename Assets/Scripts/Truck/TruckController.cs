@@ -7,14 +7,17 @@ public class TruckController : MonoBehaviour
     [SerializeField] private ParticleSystem _exhaultSmokeFXRight;
 
     private TruckMotor _motor;
+    private Truck _truck;
 
     void Start()
     {
         _motor = GetComponent<TruckMotor>();
+        _truck = GetComponent<Truck>();
     }
 
     void Update()
     {
+        if (!_truck.HavePlayerInside) return;
         GetVelocity();
         EmissionParticules();
     }

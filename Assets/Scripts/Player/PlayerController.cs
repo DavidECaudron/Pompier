@@ -11,8 +11,13 @@ public class PlayerController : MonoBehaviour
     private PlayerMotor _motor;
     private List<InteractableObject> _objectInRange = new List<InteractableObject>();
 
-    public bool CanInteract = true;
+    [HideInInspector] public bool CanMove = true;
+    [HideInInspector] public bool CanInteract = true;
+    [HideInInspector] public bool IsInTruck = false;
+
     private bool _isInInteraction = false;
+    private InteractableZone _interactableZone;
+    public Transform TruckTransform;
 
     private void Start()
     {
@@ -21,8 +26,15 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        GetVelocity();
-        GetRotation();
+        if (CanMove)
+        {
+            GetVelocity();
+            GetRotation();
+        }
+        else if (!CanMove && IsInTruck)
+        {
+            gameObject.transform.position = TruckTransform.position;
+        }
 
         InteractWithObject();
     }
@@ -31,6 +43,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && CanInteract)
         {
+            if (_interactableZone != null)
+            {
+                //utiliser interaction de la zone
+                Debug.Log("Interact with zone");
+                _interactableZone.UseInteractZone(gameObject);
+
+                _motor.SetVelocity(Vector3.zero);
+                _motor.SetRotation(Vector3.zero);
+            }
+
+
             if (!_isInInteraction)
             {
                 PickObject();
@@ -90,11 +113,17 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        InteractableObject interactableObject = other.gameObject.GetComponent<InteractableObject>();   
-        
-        if(interactableObject != null)
+        InteractableObject interactableObject = other.gameObject.GetComponent<InteractableObject>();
+
+        if (interactableObject != null)
         {
             _objectInRange.Add(interactableObject);
+        }
+
+        InteractableZone interactableZone = other.gameObject.GetComponent<InteractableZone>();
+        if (interactableZone != null)
+        {
+            _interactableZone = interactableZone;
         }
     }
 
@@ -105,6 +134,11 @@ public class PlayerController : MonoBehaviour
         if (interactableObject != null)
         {
             _objectInRange.Remove(interactableObject);
+        }
+
+        if (other.gameObject.GetComponent<InteractableZone>() != null)
+        {
+            _interactableZone = null;
         }
     }
 }
