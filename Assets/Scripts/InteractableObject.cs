@@ -2,45 +2,21 @@ using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
 {
-    private GameObject player;
-    private bool isInRange = false;
-    private bool isInInteraction = false;
+    public bool IsInInteraction = false;
 
-    void Update()
+    public void PickupObject(Transform parent)
     {
-        PerformInteraction();
+        if (IsInInteraction) return;
+        IsInInteraction = true;
+
+        gameObject.transform.SetParent(parent);
     }
 
-    private void PerformInteraction()
+    public void DropObject()
     {
-        if (isInRange)
-        {
-            if (Input.GetKeyDown(KeyCode.E) && !isInInteraction)
-            {
-                gameObject.transform.SetParent(player.transform);
-                isInInteraction = true;
-            }
-            if (Input.GetKeyDown(KeyCode.A) && isInInteraction)
-            {
-                gameObject.transform.SetParent(null);
-                isInInteraction = false;
-            }
-        }
-    }
+        if (!IsInInteraction) return;
+        IsInInteraction = false;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.GetComponent<PlayerController>() != null)
-        {
-            player = other.gameObject;
-            isInRange = true;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.GetComponent<PlayerController>() != null)
-        {
-            isInRange = false;
-        }
+        gameObject.transform.SetParent(null);
     }
 }

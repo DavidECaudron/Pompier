@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerMotor : MonoBehaviour
 {
-    private Vector3 velocity;
-    private Vector3 rotation;
-    private Rigidbody rigidBody;
+    private Vector3 _velocity;
+    private Vector3 _rotation;
+    private Rigidbody _rigidBody;
 
     private void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -19,26 +19,26 @@ public class PlayerMotor : MonoBehaviour
         PerformRotation();
     }
 
-    public void SetVelocity(Vector3 _velocity)
+    public void SetVelocity(Vector3 velocity)
     {
-        velocity = _velocity;
+        this._velocity = velocity;
     }
 
-    public void SetRotation(Vector3 _rotation)
+    public void SetRotation(Vector3 rotation)
     {
-        rotation = _rotation;
+        this._rotation = rotation;
     }
 
     private void PerformVelocity()
     {
-        if (velocity != Vector3.zero)
+        if (_velocity != Vector3.zero)
         {
-            rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
+            _rigidBody.MovePosition(_rigidBody.position + _velocity * Time.fixedDeltaTime);
         }
     }
 
     private void PerformRotation()
     {
-        rigidBody.MoveRotation(rigidBody.rotation * Quaternion.Euler(rotation));
+        _rigidBody.MoveRotation(_rigidBody.rotation * Quaternion.Euler(_rotation));
     }
 }
