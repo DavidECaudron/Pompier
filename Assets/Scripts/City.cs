@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class City : MonoBehaviour
 {
+<<<<<<< HEAD
     [SerializeField] Material houseMat;
     [SerializeField] Material cornerHouseMat;
     [SerializeField] Material streetMat;
@@ -17,15 +19,54 @@ public class City : MonoBehaviour
     void Start()
     {
         map = CityGenerator.GeneratorMap(width, height);
+=======
+    [Header("Materials")]
+    [SerializeField] private Material _houseMat;
+    [SerializeField] private Material _cornerHouseMat;
+    [SerializeField] private Material _streetMat;
+    [SerializeField] private Material _groundMat;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject[] _housePrefabs;
+    [SerializeField] private GameObject[] _cornerHousePrefabs;
+
+    [Header("Map Size")]
+    [SerializeField] [Min(10)] private int _width = 10;
+    [SerializeField] [Min(10)] private int _height = 10;
+    [SerializeField] [Min(1)] private int _scale = 1;
+
+    private EnumElementCity[,] _map;
+
+    void Start()
+    {
+        GenerateCity();
+    }
+
+    public void GenerateCity()
+    {
+        ResetCity();
+
+        _map = CityGenerator.GeneratorMap(_width, _height);
+
+>>>>>>> 57857d1d46a3439bc62a28bdd27e393ad8c05dd5
         DebugShowMap();
         GenerateVisualMap();
     }
 
+    public void ResetCity()
+    {
+        var tempList = transform.Cast<Transform>().ToList();
+        foreach (var child in tempList)
+        {
+            DestroyImmediate(child.gameObject);
+        }
+    }
+
     private void DebugShowMap()
     {
-        var index = 0;
-        var str = "";
-        foreach (var item in map)
+        int index = 0;
+        string str = "";
+        foreach (EnumElementCity item in _map)
         {
             if (index == 0)
             {
@@ -51,35 +92,36 @@ public class City : MonoBehaviour
 
     private void GenerateVisualMap()
     {
-        for (int x = 0; x < map.GetLength(0); x++)
+        for (int x = 0; x < _map.GetLength(0); x++)
         {
-            for (int y = 0; y < map.GetLength(1); y++)
+            for (int y = 0; y < _map.GetLength(1); y++)
             {
                 GameObject elementCity = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                elementCity.transform.parent = gameObject.transform;
                 elementCity.transform.localScale = new Vector3(.1f, .1f, .1f);
-                elementCity.transform.position = new Vector3(x*scale, 0, y*scale);
+                elementCity.transform.position = new Vector3(x * _scale, 0, y * _scale);
 
-                switch (map[x, y])
+                switch (_map[x, y])
                 {
                     case EnumElementCity.GROUND:
-                        elementCity.GetComponent<MeshRenderer>().material = groundMat;
+                        elementCity.GetComponent<MeshRenderer>().material = _groundMat;
                         break;
                     case EnumElementCity.STREET:
-                        elementCity.GetComponent<MeshRenderer>().material = streetMat;
+                        elementCity.GetComponent<MeshRenderer>().material = _streetMat;
                         break;
                     case EnumElementCity.HOUSE:
-                        elementCity.GetComponent<MeshRenderer>().material = houseMat;
+                        elementCity.GetComponent<MeshRenderer>().material = _houseMat;
 
-                        GameObject houseInstance = InstantiateHousePrefab(housePrefabs, new Vector3(x*scale, 0, y*scale), GetRotationForHouse(new Vector2Int(x, y))) ;
+                        GameObject houseInstance = InstantiateHousePrefab(_housePrefabs, new Vector3(x * _scale, 0, y * _scale), GetRotationForHouse(new Vector2Int(x, y)));
                         break;
 
                     case EnumElementCity.CORNER_HOUSE:
-                        elementCity.GetComponent<MeshRenderer>().material = cornerHouseMat;
-                        
+                        elementCity.GetComponent<MeshRenderer>().material = _cornerHouseMat;
+
                         Vector3 rot = GetRotationForCornerHouse(new Vector2Int(x, y));
-                    
-                        GameObject cornerHouseInstance = Instantiate(cornerHousePrefabs[0], new Vector3(x*scale, 0, y*scale), Quaternion.Euler(0,0,0), gameObject.transform);
-                        cornerHouseInstance.transform.LookAt(rot); 
+
+                        GameObject cornerHouseInstance = Instantiate(_cornerHousePrefabs[0], new Vector3(x * _scale, 0, y * _scale), Quaternion.Euler(0, 0, 0), gameObject.transform);
+                        cornerHouseInstance.transform.LookAt(rot);
                         break;
                 }
             }
@@ -94,18 +136,18 @@ public class City : MonoBehaviour
 
     private Vector3 GetRotationForCornerHouse(Vector2Int coord)
     {
-        List<Vector2Int> coordinates = CityGenerator.getCroos(map, coord);
+        List<Vector2Int> coordinates = CityGenerator.GetCroos(_map, coord);
 
         List<Vector2Int> coordinatesStreet = new List<Vector2Int>();
 
-        foreach (var coordinate in coordinates)
+        foreach (Vector2Int coordinate in coordinates)
         {
-            if(map[coordinate.x, coordinate.y] == EnumElementCity.STREET)
+            if (_map[coordinate.x, coordinate.y] == EnumElementCity.STREET)
             {
                 coordinatesStreet?.Add(coordinate);
             }
         }
-        
+
         switch (coordinatesStreet.Count)
         {
             case 2:
@@ -119,37 +161,37 @@ public class City : MonoBehaviour
 
     private float GetRotationForHouse(Vector2Int coord)
     {
-        if (CityGenerator.InRangeMap(coord.x + 1, width))
+        if (CityGenerator.InRangeMap(coord.x + 1, _width))
         {
-            if (map[coord.x + 1, coord.y] == EnumElementCity.STREET)
+            if (_map[coord.x + 1, coord.y] == EnumElementCity.STREET)
             {
                 return 180f;
             }
         }
 
 
-        if (CityGenerator.InRangeMap(coord.x - 1, width))
+        if (CityGenerator.InRangeMap(coord.x - 1, _width))
         {
-            if (map[coord.x - 1, coord.y] == EnumElementCity.STREET)
+            if (_map[coord.x - 1, coord.y] == EnumElementCity.STREET)
             {
                 return 0f;
             }
         }
 
 
-        if (CityGenerator.InRangeMap(coord.y + 1, height))
+        if (CityGenerator.InRangeMap(coord.y + 1, _height))
         {
-            if (map[coord.x, coord.y+1] == EnumElementCity.STREET)
+            if (_map[coord.x, coord.y + 1] == EnumElementCity.STREET)
             {
                 return 90f;
             }
         }
 
-        if (CityGenerator.InRangeMap(coord.y - 1, height))
+        if (CityGenerator.InRangeMap(coord.y - 1, _height))
         {
-            if (map[coord.x, coord.y-1] == EnumElementCity.STREET)
+            if (_map[coord.x, coord.y - 1] == EnumElementCity.STREET)
             {
-                return - 90;
+                return -90;
             }
         }
 
