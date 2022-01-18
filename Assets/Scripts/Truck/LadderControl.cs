@@ -12,7 +12,7 @@ public class LadderControl : MonoBehaviour
     void Start()
     {
         //Start l'echelle à l'angle 359
-        _ladder001.transform.rotation = Quaternion.Euler(new Vector3(359f, 0f, 0f));
+        _ladder001.transform.rotation = Quaternion.Euler(new Vector3(359f, _ladder001.transform.rotation.eulerAngles.y, 0f));
     }
     void Update()
     {
@@ -26,7 +26,7 @@ public class LadderControl : MonoBehaviour
         {
             gameObject.transform.Rotate(new Vector3(0, 1, 0), -0.1f);
         }
-        if (Input.GetKey(KeyCode.Keypad6))
+        else if (Input.GetKey(KeyCode.Keypad6))
         {
             gameObject.transform.Rotate(new Vector3(0, 1, 0), 0.1f);
         }
