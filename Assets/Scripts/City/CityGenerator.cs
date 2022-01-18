@@ -97,28 +97,28 @@ public class CityGenerator
         return index >= 0 && index < LEN;
     }
 
-    public static List<Vector2Int> getDiagonalCroos(EnumElementCity [,] map, Vector2Int position)
+    public static List<Vector2Int> GetDiagonalCroos(EnumElementCity [,] map, Vector2Int position)
     {
         var indexs = new [] {(1,1), (1,-1), (-1,-1), (-1,1)};
 
-        return getTiles(map, position, indexs);
+        return GetTiles(map, position, indexs);
     }
 
-    public static List<Vector2Int> getCroos(EnumElementCity [,] map, Vector2Int position)
+    public static List<Vector2Int> GetCroos(EnumElementCity [,] map, Vector2Int position)
     {
         var indexs = new [] {(0,1), (1,0), (0,-1), (-1,0)};
 
-        return getTiles(map, position, indexs);
+        return GetTiles(map, position, indexs);
     }
 
-    public static List<Vector2Int> getArround(EnumElementCity [,] map, Vector2Int position)
+    public static List<Vector2Int> GetArround(EnumElementCity [,] map, Vector2Int position)
     {
         var indexs = new [] {(0,1), (1,1), (1,0), (1,-1), (0,-1), (-1,-1), (-1,0), (-1,1)};
 
-        return getTiles(map, position, indexs);
+        return GetTiles(map, position, indexs);
     }
 
-    private static List<Vector2Int> getTiles(EnumElementCity [,] map, Vector2Int position,(int, int) [] indexs)
+    private static List<Vector2Int> GetTiles(EnumElementCity [,] map, Vector2Int position,(int, int) [] indexs)
     {
         var elementsArround = new List<Vector2Int>();
 
@@ -131,6 +131,5 @@ public class CityGenerator
         }
 
         return elementsArround;
-    }
-    
+    }    
 }
