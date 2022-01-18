@@ -7,21 +7,16 @@ public class City : MonoBehaviour
     [SerializeField] Material cornerHouseMat;
     [SerializeField] Material streetMat;
     [SerializeField] Material groundMat;
-
     [SerializeField] GameObject[] housePrefabs;
     [SerializeField] GameObject[] cornerHousePrefabs;
-
     [SerializeField] [Min(10)] int width = 10;
     [SerializeField] [Min(10)] int height = 10;
-
     [SerializeField] [Min(1)] int scale = 1;
-
     private EnumElementCity[,] map;
 
     void Start()
     {
         map = CityGenerator.GeneratorMap(width, height);
-
         DebugShowMap();
         GenerateVisualMap();
     }
@@ -53,7 +48,6 @@ public class City : MonoBehaviour
 
         Debug.Log(str);
     }
-
 
     private void GenerateVisualMap()
     {
