@@ -94,8 +94,8 @@ GameObject:
   - component: {fileID: 2432517642496737436}
   - component: {fileID: 2432517642496737439}
   - component: {fileID: 2432517642496737438}
-  - component: {fileID: 2432517642496737441}
   - component: {fileID: 2432517642496737440}
+  - component: {fileID: 4388473931905653081}
   m_Layer: 0
   m_Name: Truck
   m_TagString: Untagged
@@ -146,26 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa3e350a5d03684baae69d7a8bf39ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  centerOfMass: {fileID: 4860059688984729621}
-  motorTorque: 1000
-  maxSteer: 50
-  currentSpeed: 0
-  speed: 0
-  exhaultSmokeFXLeft: {fileID: 4860059689976140370}
-  exhaultSmokeFXRight: {fileID: 4860059689117591140}
---- !u!114 &2432517642496737441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2432517642496737443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e56015c019762f468a3fe30dbb90ef2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controlType: 0
+  _exhaultSmokeFXLeft: {fileID: 4860059689976140370}
+  _exhaultSmokeFXRight: {fileID: 4860059689117591140}
 --- !u!65 &2432517642496737440
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -179,6 +161,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 3.0508595, z: 9.202686}
   m_Center: {x: 3.3618695e-16, y: 1.5254297, z: -0.10134292}
+--- !u!114 &4388473931905653081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2432517642496737443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a436af57e0596a54cbf0f77d9bc4c45b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 0
+  _centerOfMass: {fileID: 4860059688984729621}
+  _motorTorque: 1500
+  _maxSteer: 20
+  _currentSpeed: 0
 --- !u!1 &4860059688984729622
 GameObject:
   m_ObjectHideFlags: 0
@@ -10745,9 +10744,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87dac918beb8694fb313ad4ca81f949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ladder001: {fileID: 4969968431027362748}
-  ladder002: {fileID: 4969968430326914458}
-  ladder003: {fileID: 4969968430119954610}
+  _ladder001: {fileID: 4969968431027362748}
+  _ladder002: {fileID: 4969968430326914458}
+  _ladder003: {fileID: 4969968430119954610}
   _minAngle: 340
   _maxAngle: 359
 --- !u!1 &5742950821113020678

@@ -82,7 +82,7 @@ public class City : MonoBehaviour
             {
                 GameObject elementCity = GameObject.CreatePrimitive(PrimitiveType.Plane);
                 elementCity.transform.parent = gameObject.transform;
-                elementCity.transform.localScale = new Vector3(.1f, .1f, .1f);
+                elementCity.transform.localScale = new Vector3(.1f* _scale, .1f * _scale, .1f * _scale);
                 elementCity.transform.position = new Vector3(x * _scale, 0, y * _scale);
 
                 switch (_map[x, y])

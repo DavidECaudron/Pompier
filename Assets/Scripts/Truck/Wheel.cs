@@ -24,6 +24,7 @@ public class Wheel : MonoBehaviour
         wheelTransform.position = pos;
         wheelTransform.rotation = rot;
     }
+
     void FixedUpdate() 
     {
         if (steer)
