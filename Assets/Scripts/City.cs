@@ -36,7 +36,7 @@ public class City : MonoBehaviour
         GenerateVisualMap();
     }
 
-    private void ResetCity()
+    public void ResetCity()
     {
         var tempList = transform.Cast<Transform>().ToList();
         foreach (var child in tempList)
