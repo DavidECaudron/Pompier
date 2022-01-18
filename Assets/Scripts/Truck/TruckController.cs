@@ -1,29 +1,45 @@
 using UnityEngine;
 
+[RequireComponent(typeof(TruckMotor))]
 public class TruckController : MonoBehaviour
 {
-    [SerializeField] private Transform centerOfMass;
-    [SerializeField] private float motorTorque = 1500f;
-    [SerializeField] private float maxSteer = 20f;
+    [SerializeField] private ParticleSystem _exhaultSmokeFXLeft;
+    [SerializeField] private ParticleSystem _exhaultSmokeFXRight;
 
-    public float Steer {get; set; }
-    public float Throttle {get; set; }
-    private Rigidbody _rigidbody;
-    private Wheel[] wheels;
+    private TruckMotor _motor;
+    private Truck _truck;
 
-    void Start() 
+    void Start()
     {
-        wheels = GetComponentsInChildren<Wheel>();
-        _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.centerOfMass = centerOfMass.localPosition;    
+        _motor = GetComponent<TruckMotor>();
+        _truck = GetComponent<Truck>();
     }
-    
+
     void Update()
     {
-        foreach (var wheel in wheels)
+        if (!_truck.HavePlayerInside) return;
+        GetVelocity();
+        EmissionParticules();
+    }
+
+    private void GetVelocity()
+    {
+        _motor.Steer = Input.GetAxis("Horizontal");
+        _motor.Throttle = Input.GetAxis("Vertical");
+        _motor.Throttle = Mathf.Clamp(_motor.Throttle, -.5f, 1);
+    }
+
+    private void EmissionParticules()
+    {
+        if (_motor.Speed > 5)
         {
-            wheel.SteerAngle = Steer * maxSteer;
-            wheel.Torque = Throttle * motorTorque;
+            _exhaultSmokeFXLeft.Emit(1);
+            _exhaultSmokeFXRight.Emit(1);
+        }
+        else
+        {
+            _exhaultSmokeFXLeft.Emit(0);
+            _exhaultSmokeFXRight.Emit(0);
         }
     }
 }
