@@ -5,20 +5,32 @@ public class Truck : MonoBehaviour
 {
     public List<Player> PlayersInside = new List<Player>();
     [SerializeField] private List<Transform> _playerPosInTruck = new List<Transform>();
+    [SerializeField] private Transform _playerRespawn;
 
     public bool HavePlayerInside
     {
         get { return PlayersInside.Count > 0; }
     }
 
-    public void PlayerEnterTruck(Player player)
-    {
-        //Placer joueur enfant du camion
-        //placer le joueur dans la camion
-        //Desactiver deplacement du joueur
-        PlayersInside.Add(player);
 
+    public void EnterExitTruck(Player player)
+    {
         PlayerController playerController = player.gameObject.GetComponent<PlayerController>();
+
+        if (playerController.IsInTruck)
+        {
+            PlayerExitTruck(player, playerController);
+        }
+        else
+        {
+            PlayerEnterTruck(player, playerController);
+        }
+    }
+
+    private void PlayerEnterTruck(Player player, PlayerController playerController)
+    {
+        PlayersInside.Add(player);
+        
         Transform transformParent = _playerPosInTruck[PlayersInside.Count - 1];
 
         playerController.CanMove = false;
@@ -31,15 +43,17 @@ public class Truck : MonoBehaviour
         Debug.Log("Entrer dans le camion");
     }
 
-    public void PlayerExitTruck(Player player)
+    private void PlayerExitTruck(Player player, PlayerController playerController)
     {
         PlayersInside.Remove(player);
 
-        PlayerController playerController = player.gameObject.GetComponent<PlayerController>();
         playerController.CanMove = true;
         playerController.IsInTruck = false;
         playerController.TruckTransform = null;
-
         player.transform.SetParent(null);
+
+        player.gameObject.transform.position = _playerRespawn.position;
+
+        playerController.StopPlayerMovement();
     }
 }

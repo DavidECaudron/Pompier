@@ -39,6 +39,11 @@ public class PlayerController : MonoBehaviour
         InteractWithObject();
     }
 
+    public void StopPlayerMovement()
+    {
+        _motor.StopMovement();
+    }
+
     private void InteractWithObject()
     {
         if (Input.GetKeyDown(KeyCode.E) && CanInteract)

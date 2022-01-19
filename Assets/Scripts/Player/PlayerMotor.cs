@@ -29,6 +29,11 @@ public class PlayerMotor : MonoBehaviour
         this._rotation = rotation;
     }
 
+    public void StopMovement()
+    {
+        _rigidBody.velocity = Vector3.zero;
+    }
+
     private void PerformVelocity()
     {
         if (_velocity != Vector3.zero)
