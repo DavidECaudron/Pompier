@@ -69,8 +69,6 @@ public class City : MonoBehaviour
             index++;
             index %= 10;
         }
-
-        Debug.Log(str);
     }
 
 
