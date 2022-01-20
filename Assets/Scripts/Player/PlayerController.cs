@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private bool _isInInteraction = false;
     private InteractableZone _interactableZone;
     public Transform TruckTransform;
+    public GameObject truck;
 
     private void Start()
     {
@@ -57,7 +58,6 @@ public class PlayerController : MonoBehaviour
                 _motor.SetVelocity(Vector3.zero);
                 _motor.SetRotation(Vector3.zero);
             }
-
 
             if (!_isInInteraction)
             {

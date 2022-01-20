@@ -18,6 +18,7 @@ public class City : MonoBehaviour
     [SerializeField] [Min(10)] private int _width = 10;
     [SerializeField] [Min(10)] private int _height = 10;
     [SerializeField] [Min(1)] private int _scale = 1;
+    [SerializeField] public GameObject center;
 
     private EnumElementCity[,] _map;
 
@@ -95,6 +96,10 @@ public class City : MonoBehaviour
                         elementCity.GetComponent<MeshRenderer>().material = _houseMat;
 
                         GameObject houseInstance = InstantiateHousePrefab(_housePrefabs, new Vector3(x * _scale, 0, y * _scale), GetRotationForHouse(new Vector2Int(x, y)));
+                        if(x == _map.GetLength(0)/2 &&  y == _map.GetLength(1)/2)
+                        {
+                            center = houseInstance;
+                        }
                         break;
 
                     case EnumElementCity.CORNER_HOUSE:

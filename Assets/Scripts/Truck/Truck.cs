@@ -7,6 +7,8 @@ public class Truck : MonoBehaviour
     [SerializeField] private List<Transform> _playerPosInTruck = new List<Transform>();
     [SerializeField] private Transform _playerRespawn;
 
+    private bool inFireZone = false;
+
     public bool HavePlayerInside
     {
         get { return PlayersInside.Count > 0; }
@@ -19,7 +21,14 @@ public class Truck : MonoBehaviour
 
         if (playerController.IsInTruck)
         {
-            PlayerExitTruck(player, playerController);
+            if(GameManager.Instance.truckInFireInstance())
+            {
+                PlayerExitTruck(player, playerController);
+            }
+            else
+            {
+                Debug.Log("YOU NOT ARE IN FIRE ZONE");
+            }
         }
         else
         {
