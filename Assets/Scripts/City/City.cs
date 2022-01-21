@@ -4,36 +4,34 @@ using System.Linq;
 
 public class City : MonoBehaviour
 {
+    [HideInInspector] public GameObject center;
+
     [Header("Materials")]
     [SerializeField] private Material _houseMat;
     [SerializeField] private Material _cornerHouseMat;
     [SerializeField] private Material _streetMat;
     [SerializeField] private Material _groundMat;
+    [SerializeField] private Material _obstacleMat;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject[] _housePrefabs;
     [SerializeField] private GameObject[] _cornerHousePrefabs;
+    [SerializeField] private GameObject _obstaclePrefab;
+    [SerializeField] private GameObject[] _obstacleMeshes;
 
     [Header("Map Size")]
     [SerializeField] [Min(10)] private int _width = 10;
     [SerializeField] [Min(10)] private int _height = 10;
     [SerializeField] [Min(1)] private int _scale = 1;
-    [SerializeField] public GameObject center;
 
     private EnumElementCity[,] _map;
-
-    void Start()
-    {
-        GenerateCity();
-    }
 
     public void GenerateCity()
     {
         ResetCity();
-
         _map = CityGenerator.GeneratorMap(_width, _height);
 
-        DebugShowMap();
+        DebugShowMap(_width);
         GenerateVisualMap();
     }
 
@@ -46,7 +44,7 @@ public class City : MonoBehaviour
         }
     }
 
-    private void DebugShowMap()
+    private void DebugShowMap(int size)
     {
         int index = 0;
         string str = "";
@@ -65,11 +63,17 @@ public class City : MonoBehaviour
                     str += 'S'; break;
                 case EnumElementCity.HOUSE:
                     str += 'H'; break;
+                case EnumElementCity.CORNER_HOUSE:
+                    str += 'C'; break;
+                case EnumElementCity.OBSTACLE:
+                    str += 'O'; break;
             }
 
             index++;
-            index %= 10;
+            index %= size;
         }
+
+        Debug.Log(str);
     }
 
 
@@ -79,10 +83,12 @@ public class City : MonoBehaviour
         {
             for (int y = 0; y < _map.GetLength(1); y++)
             {
+                Vector3 obectPosition = new Vector3(x * _scale, 0, y * _scale);
+
                 GameObject elementCity = GameObject.CreatePrimitive(PrimitiveType.Plane);
                 elementCity.transform.parent = gameObject.transform;
-                elementCity.transform.localScale = new Vector3(.1f* _scale, .1f * _scale, .1f * _scale);
-                elementCity.transform.position = new Vector3(x * _scale, 0, y * _scale);
+                elementCity.transform.localScale = new Vector3(.1f * _scale, .1f * _scale, .1f * _scale);
+                elementCity.transform.position = obectPosition;
 
                 switch (_map[x, y])
                 {
@@ -92,11 +98,27 @@ public class City : MonoBehaviour
                     case EnumElementCity.STREET:
                         elementCity.GetComponent<MeshRenderer>().material = _streetMat;
                         break;
+
+                    case EnumElementCity.OBSTACLE:
+                        elementCity.GetComponent<MeshRenderer>().material = _obstacleMat;
+
+                        GameObject obstacleInstance = InstantiatePrefab(_obstaclePrefab, obectPosition);
+
+                        Transform graphics = null;
+                        foreach (Transform item in obstacleInstance.transform)
+                        {
+                            graphics = item;
+                        }
+
+                        int index = Random.Range(0, _obstacleMeshes.Length);
+                        Instantiate(_obstacleMeshes[index], graphics);
+                        break;
+
                     case EnumElementCity.HOUSE:
                         elementCity.GetComponent<MeshRenderer>().material = _houseMat;
 
-                        GameObject houseInstance = InstantiateHousePrefab(_housePrefabs, new Vector3(x * _scale, 0, y * _scale), GetRotationForHouse(new Vector2Int(x, y)));
-                        if(x == _map.GetLength(0)/2 &&  y == _map.GetLength(1)/2)
+                        GameObject houseInstance = InstantiatePrefab(_housePrefabs, obectPosition, GetRotationForHouse(new Vector2Int(x, y)));
+                        if (x == _map.GetLength(0) / 2 && y == _map.GetLength(1) / 2)
                         {
                             center = houseInstance;
                         }
@@ -107,7 +129,7 @@ public class City : MonoBehaviour
 
                         Vector3 rot = GetRotationForCornerHouse(new Vector2Int(x, y));
 
-                        GameObject cornerHouseInstance = Instantiate(_cornerHousePrefabs[0], new Vector3(x * _scale, 0, y * _scale), Quaternion.Euler(0, 0, 0), gameObject.transform);
+                        GameObject cornerHouseInstance = InstantiatePrefab(_cornerHousePrefabs, obectPosition);
                         cornerHouseInstance.transform.LookAt(rot);
                         break;
                 }
@@ -115,10 +137,15 @@ public class City : MonoBehaviour
         }
     }
 
-    private GameObject InstantiateHousePrefab(GameObject[] prefabs, Vector3 pos, float rotationAngle)
+    private GameObject InstantiatePrefab(GameObject[] prefabs, Vector3 pos, float rotationAngle = 0f)
     {
         int index = Random.Range(0, prefabs.Length);
-        return Instantiate(prefabs[index], pos, Quaternion.AngleAxis(rotationAngle, Vector3.up), gameObject.transform);
+        return InstantiatePrefab(prefabs[index], pos, rotationAngle);
+    }
+
+    private GameObject InstantiatePrefab(GameObject prefabs, Vector3 pos, float rotationAngle = 0f)
+    {
+        return Instantiate(prefabs, pos, Quaternion.AngleAxis(rotationAngle, Vector3.up), gameObject.transform);
     }
 
     private Vector3 GetRotationForCornerHouse(Vector2Int coord)

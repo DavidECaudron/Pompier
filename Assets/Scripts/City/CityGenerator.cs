@@ -10,9 +10,9 @@ public class CityGenerator
         map[width / 2, height / 2] = EnumElementCity.GROUND;
 
         CityGenerator.GenerateStreets(map, new Vector2Int(width / 2, height / 2), width);
-
         CityGenerator.GenerateHouses(map, width, height);
         CityGenerator.GenerateCornerHouses(map, width, height);
+        CityGenerator.GenerateObstacle(map, width, height);
 
         return map;
     }
@@ -73,7 +73,7 @@ public class CityGenerator
                 bool axisY = false;
                 bool axisX = false;
 
-                if (CityGenerator.InRangeMap(y + 1, height) && CityGenerator.InRangeMap(y -1, height))
+                if (CityGenerator.InRangeMap(y + 1, height) && CityGenerator.InRangeMap(y - 1, height))
                 {
                     axisY = map[x, y - 1] == EnumElementCity.STREET || map[x, y + 1] == EnumElementCity.STREET;
                 }
@@ -92,44 +92,75 @@ public class CityGenerator
         }
     }
 
+    private static void GenerateObstacle(EnumElementCity[,] map, int width, int height)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                EnumElementCity current = map[x, y];
+
+                if (current == EnumElementCity.STREET)
+                {
+                    List<Vector2Int> positions = GetCroos(map, new Vector2Int(x, y));
+                    int i = 0;
+
+                    foreach (Vector2Int pos in positions)
+                    {
+                        if (map[pos.x, pos.y] == EnumElementCity.STREET || map[pos.x, pos.y] == EnumElementCity.OBSTACLE) i++;
+                    }
+
+                    if (i < 2) map[x, y] = EnumElementCity.OBSTACLE;
+                }
+            }
+        }
+    }
+
     public static bool InRangeMap(int index, int LEN)
     {
         return index >= 0 && index < LEN;
     }
 
-    public static List<Vector2Int> GetDiagonalCroos(EnumElementCity [,] map, Vector2Int position)
+    public static List<Vector2Int> GetDiagonalCroos(EnumElementCity[,] map, Vector2Int position)
     {
-        var indexs = new [] {(1,1), (1,-1), (-1,-1), (-1,1)};
+        var indexs = new[] { (1, 1), (1, -1), (-1, -1), (-1, 1) };
 
         return GetTiles(map, position, indexs);
     }
 
-    public static List<Vector2Int> GetCroos(EnumElementCity [,] map, Vector2Int position)
+    public static List<Vector2Int> GetCroos(EnumElementCity[,] map, Vector2Int position)
     {
-        var indexs = new [] {(0,1), (1,0), (0,-1), (-1,0)};
+        var indexs = new[] { (0, 1), (1, 0), (0, -1), (-1, 0) };
 
         return GetTiles(map, position, indexs);
     }
 
-    public static List<Vector2Int> GetArround(EnumElementCity [,] map, Vector2Int position)
+    public static List<Vector2Int> GetArround(EnumElementCity[,] map, Vector2Int position)
     {
-        var indexs = new [] {(0,1), (1,1), (1,0), (1,-1), (0,-1), (-1,-1), (-1,0), (-1,1)};
+        var indexs = new[] { (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1) };
 
         return GetTiles(map, position, indexs);
     }
 
-    private static List<Vector2Int> GetTiles(EnumElementCity [,] map, Vector2Int position,(int, int) [] indexs)
+    private static List<Vector2Int> GetTiles(EnumElementCity[,] map, Vector2Int position, (int, int)[] indexs)
     {
         var elementsArround = new List<Vector2Int>();
 
+        int width = map.GetLength(0);
+        int height = map.GetLength(1);
+
         foreach (var index in indexs)
         {
-            var index_x = Mathf.Clamp(position.x + index.Item1, 0, map.GetLength(0));
-            var index_y = Mathf.Clamp(position.y + index.Item2, 0, map.GetLength(1));
 
-            elementsArround.Add(new Vector2Int(index_x, index_y));
+            var index_x = position.x + index.Item1;
+            var index_y = position.y + index.Item2;
+
+            if (InRangeMap(index_x, width) && InRangeMap(index_y, height))
+            {
+                elementsArround.Add(new Vector2Int(index_x, index_y));
+            }
         }
 
         return elementsArround;
-    }    
+    }
 }
