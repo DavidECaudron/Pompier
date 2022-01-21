@@ -9,7 +9,6 @@ public class InteractableZone : MonoBehaviour
     {
         Player player = obj.GetComponent<Player>();
         if (player == null) return;
-        Debug.Log("Call interact function");
         _functionToCall?.Invoke(player);
     }
 }

@@ -8,14 +8,17 @@ public class LadderControl : MonoBehaviour
 
     [SerializeField] private float _minAngle = 300f;
     [SerializeField] private float _maxAngle = 359f;
+    private Truck _truck;
 
     void Start()
     {
+        _truck = GetComponentInParent<Truck>();
         //Start l'echelle à l'angle 359
         _ladder001.transform.rotation = Quaternion.Euler(new Vector3(359f, _ladder001.transform.rotation.eulerAngles.y, 0f));
     }
     void Update()
     {
+        if (!_truck.playerInLadderController) return;
         RightLeftLadder();
         ExtandRetractLadder();
         UpDownLadder();
