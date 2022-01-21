@@ -51,10 +51,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_interactableZone != null)
             {
-                //utiliser interaction de la zone
-                Debug.Log("Interact with zone");
                 _interactableZone.UseInteractZone(gameObject);
-
                 _motor.SetVelocity(Vector3.zero);
                 _motor.SetRotation(Vector3.zero);
             }
