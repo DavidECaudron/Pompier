@@ -18,6 +18,7 @@ public class City : MonoBehaviour
     [SerializeField] private GameObject[] _cornerHousePrefabs;
     [SerializeField] private GameObject _obstaclePrefab;
     [SerializeField] private GameObject[] _obstacleMeshes;
+    [SerializeField] private GameObject roadPrefab;
 
     [Header("Map Size")]
     [SerializeField] [Min(10)] private int _width = 10;
@@ -96,7 +97,11 @@ public class City : MonoBehaviour
                         elementCity.GetComponent<MeshRenderer>().material = _groundMat;
                         break;
                     case EnumElementCity.STREET:
-                        elementCity.GetComponent<MeshRenderer>().material = _streetMat;
+                        //elementCity.GetComponent<MeshRenderer>().material = _streetMat;
+                        DestroyImmediate(elementCity);
+                        GameObject road = Instantiate(roadPrefab, transform.parent);        
+                        road.transform.localScale = new Vector3(.1f * _scale, .1f * _scale, .1f * _scale);
+                        road.transform.position = obectPosition;
                         break;
 
                     case EnumElementCity.OBSTACLE:

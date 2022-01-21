@@ -53,8 +53,9 @@ MonoBehaviour:
   - {fileID: 8537324661849899433, guid: 4c9b5617dfe3f0f45aa450b1226c8cba, type: 3}
   _cornerHousePrefabs:
   - {fileID: 6909062750042841956, guid: 74c2b8a73bc168e4594212256db60765, type: 3}
-  _obstaclePrefabs:
-  - {fileID: 919132149155446097, guid: 3de64c7b9a64db64dbda1aa6cc00339e, type: 3}
+  _obstaclePrefab: {fileID: 4627393537037904589, guid: 8d232b4cfbf4ca04b8af522514f08321, type: 3}
+  _obstacleMeshes: []
+  roadPrefab: {fileID: 9020169621977050643, guid: 7cde7288628406a4d8a2e6d8b17d0c6d, type: 3}
   _width: 25
   _height: 25
   _scale: 1
