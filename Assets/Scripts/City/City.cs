@@ -45,6 +45,11 @@ public class City : MonoBehaviour
         }
     }
 
+    public void SetMap()
+    {
+        this._map = new EnumElementCity[_width,_height];
+    }
+
     public EnumElementCity[,] GetMap()
     {
         return this._map;

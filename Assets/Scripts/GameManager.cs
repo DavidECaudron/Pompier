@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         CityFireManager.Instance = GetComponent<CityFireManager>();
+        city.GetComponent<City>().SetMap();
     }
 
     private void Start()
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour
         
         players[0].GetComponent<PlayerController>().truck = truck;
 
-        //CityFireManager.Instance.StartFiref();
+        CityFireManager.Instance.StartFiref();
     }
 
     private void Update()

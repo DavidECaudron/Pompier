@@ -42,6 +42,7 @@ public class CityFireManager : MonoBehaviour
         }
 
         housesFired.Add(new Vector2Int(x, y));
+        Debug.Log("Fire");
     }
 
     public void setEnable(bool value)
