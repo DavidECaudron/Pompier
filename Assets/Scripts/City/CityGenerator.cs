@@ -3,18 +3,36 @@ using System.Collections.Generic;
 
 public class CityGenerator
 {
-    public static EnumElementCity[,] GeneratorMap(int width, int height)
+    public static EnumElementCity[,] GeneratorMap(int size)
     {
-        EnumElementCity[,] map = new EnumElementCity[width, height];
+        EnumElementCity[,] map = new EnumElementCity[size, size];
 
-        map[width / 2, height / 2] = EnumElementCity.GROUND;
+        map[size / 2, size / 2] = EnumElementCity.GROUND;
 
-        CityGenerator.GenerateStreets(map, new Vector2Int(width / 2, height / 2), width);
-        CityGenerator.GenerateHouses(map, width, height);
-        CityGenerator.GenerateCornerHouses(map, width, height);
-        CityGenerator.GenerateObstacle(map, width, height);
+        CityGenerator.GenerateStreets(map, new Vector2Int(size / 2, size / 2), size);
+        CityGenerator.GenerateHouses(map, size, size);
+        CityGenerator.GenerateCornerHouses(map, size, size);
+        CityGenerator.GenerateObstacle(map, size, size);
 
         return map;
+    }
+
+    public static Dictionary<Position, CellMap> GenerateMap(int size)
+    {
+        EnumElementCity[,] map = GeneratorMap(size);
+        Dictionary<Position, CellMap> dict = new Dictionary<Position, CellMap>();
+
+        for (int x = 0; x < map.GetLength(0); x++)
+        {
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                Position pos = new Position() { X = x, Y = y };
+                CellMap cell = new CellMap() { CellType = map[x, y] };
+                dict.Add(pos, cell);
+            }
+        }
+
+        return dict;
     }
 
     private static void GenerateStreets(EnumElementCity[,] map, Vector2Int center, int width)

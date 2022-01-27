@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6739be971d055a4ca60230d7c8e55a0, type: 3}
+  m_Name: CornerHouse
+  m_EditorClassIdentifier: 
+  Material: {fileID: 2100000, guid: 625626ced4f4bfd43939c8552ca07c89, type: 2}
+  Prefabs:
+  - {fileID: 6909062750042841956, guid: 74c2b8a73bc168e4594212256db60765, type: 3}
+  Meshes: []
+  UseCustomScale: 0
+  Scale: {x: 1, y: 1, z: 1}
+  GeneratePlane: 1
