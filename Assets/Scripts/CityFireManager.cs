@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 public class CityFireManager : MonoBehaviour
 {
+<<<<<<< HEAD
+=======
+    public static CityFireManager Instance {get;set;}
+>>>>>>> c18c9cdfe3591584812851282dab69ecabf7becf
     private UnityEvent _fireTimeOut = new UnityEvent();
 
     [SerializeField] private float TIME_INTERVAL_SECONDS = 1.0f;
@@ -15,6 +19,7 @@ public class CityFireManager : MonoBehaviour
     [SerializeField]
     private List<Vector2Int> housesFired = new List<Vector2Int>();
 
+<<<<<<< HEAD
     private void Start()
     {
     }
@@ -23,6 +28,8 @@ public class CityFireManager : MonoBehaviour
     {
     }
 
+=======
+>>>>>>> c18c9cdfe3591584812851282dab69ecabf7becf
     private IEnumerator FireTimeOut()
     {
         this.newHouseFired();
