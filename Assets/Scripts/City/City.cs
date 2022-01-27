@@ -4,8 +4,27 @@ using System.Linq;
 
 public class City : MonoBehaviour
 {
+<<<<<<< HEAD:Assets/Scripts/City/City.cs
     [HideInInspector] public GameObject center;
 
+=======
+<<<<<<< HEAD
+    [SerializeField] Material houseMat;
+    [SerializeField] Material cornerHouseMat;
+    [SerializeField] Material streetMat;
+    [SerializeField] Material groundMat;
+    [SerializeField] GameObject[] housePrefabs;
+    [SerializeField] GameObject[] cornerHousePrefabs;
+    [SerializeField] [Min(10)] int width = 10;
+    [SerializeField] [Min(10)] int height = 10;
+    [SerializeField] [Min(1)] int scale = 1;
+    private EnumElementCity[,] map;
+
+    void Start()
+    {
+        map = CityGenerator.GeneratorMap(width, height);
+=======
+>>>>>>> c578a4a9d73b6bfd6a264298c05c78daee3d5b2a:Assets/Scripts/City.cs
     [Header("Materials")]
     [SerializeField] private Material _houseMat;
     [SerializeField] private Material _cornerHouseMat;
@@ -32,7 +51,12 @@ public class City : MonoBehaviour
         ResetCity();
         _map = CityGenerator.GeneratorMap(_width, _height);
 
+<<<<<<< HEAD:Assets/Scripts/City/City.cs
         DebugShowMap(_width);
+=======
+>>>>>>> 57857d1d46a3439bc62a28bdd27e393ad8c05dd5
+        DebugShowMap();
+>>>>>>> c578a4a9d73b6bfd6a264298c05c78daee3d5b2a:Assets/Scripts/City.cs
         GenerateVisualMap();
     }
 
@@ -81,7 +105,6 @@ public class City : MonoBehaviour
 
         Debug.Log(str);
     }
-
 
     private void GenerateVisualMap()
     {

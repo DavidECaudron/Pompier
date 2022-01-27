@@ -15,10 +15,5 @@ public class CityGeneratorEditor : Editor
         {
             mapPreview.GenerateCity();
         }
-
-        if (GUILayout.Button("Delete"))
-        {
-            mapPreview.ResetCity();
-        }
     }
 }
