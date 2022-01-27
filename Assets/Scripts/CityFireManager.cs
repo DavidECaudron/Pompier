@@ -32,13 +32,13 @@ public class CityFireManager : MonoBehaviour
     {
         var map = city.GetMap();
     
-        int x = Random.Range(0, city.GetMap().GetLength(0));
-        int y = Random.Range(0, city.GetMap().GetLength(1));
+        int x = city.Size;
+        int y = city.Size;
 
         while(housesFired.Contains(new Vector2Int(x, y)))
         {
-            x = Random.Range(0, city.GetMap().GetLength(0));
-            y = Random.Range(0, city.GetMap().GetLength(1));
+            x = Random.Range(0, city.Size);
+            y = Random.Range(0, city.Size);
         }
 
         housesFired.Add(new Vector2Int(x, y));

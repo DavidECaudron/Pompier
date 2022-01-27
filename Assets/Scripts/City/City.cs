@@ -4,36 +4,53 @@ using System.Linq;
 
 public class City : MonoBehaviour
 {
-    [HideInInspector] public GameObject center;
-
-    [Header("Materials")]
-    [SerializeField] private Material _houseMat;
-    [SerializeField] private Material _cornerHouseMat;
-    [SerializeField] private Material _streetMat;
-    [SerializeField] private Material _groundMat;
-    [SerializeField] private Material _obstacleMat;
-
-    [Header("Prefabs")]
-    [SerializeField] private GameObject[] _housePrefabs;
-    [SerializeField] private GameObject[] _cornerHousePrefabs;
-    [SerializeField] private GameObject _obstaclePrefab;
-    [SerializeField] private GameObject[] _obstacleMeshes;
-    [SerializeField] private GameObject roadPrefab;
+    [Header("Parameters")]
+    [SerializeField] private ElementCityParameter _houseParameter;
+    [SerializeField] private ElementCityParameter _cornerHouseParameter;
+    [SerializeField] private ElementCityParameter _streetParameter;
+    [SerializeField] private ElementCityParameter _groundParameter;
+    [SerializeField] private ElementCityParameter _obstacleParameter;
+    [SerializeField] private bool _generateLogMap = true;
 
     [Header("Map Size")]
-    [SerializeField] [Min(10)] private int _width = 10;
-    [SerializeField] [Min(10)] private int _height = 10;
-    [SerializeField] [Min(1)] private int _scale = 1;
+    [SerializeField] private CityParameter _cityParameter;
 
-    private EnumElementCity[,] _map;
+    private Dictionary<Position, CellMap> _dictMap;
+
+    public int Size
+    {
+        get { return _cityParameter.Size; }
+    }
+
+    private void Start()
+    {
+        if(_dictMap == null)
+        {
+            _dictMap = new Dictionary<Position, CellMap>();
+
+            //charger le dico avec les objets de la map
+
+            //boucler dans chaque enfant, et pou chaque enfant récupérer ses enfant pour les charger dans cellmap du dico
+        }
+    }
 
     public void GenerateCity()
     {
-        ResetCity();
-        _map = CityGenerator.GeneratorMap(_width, _height);
+        if(_cityParameter == null)
+        {
+            Debug.LogError("City parameter cant be nothing");
+            return;
+        }
 
-        DebugShowMap(_width);
-        GenerateVisualMap();
+        ResetCity();
+        _dictMap = CityGenerator.GenerateMap(_cityParameter.Size);
+
+        if (_generateLogMap)
+        {
+            DebugShowMap(_cityParameter.Size);
+        }
+
+        GenerateVisualMap(_cityParameter.Scale);
     }
 
     public void ResetCity()
@@ -45,23 +62,23 @@ public class City : MonoBehaviour
         }
     }
 
-    public EnumElementCity[,] GetMap()
+    public Dictionary<Position, CellMap> GetMap()
     {
-        return this._map;
+        return _dictMap;
     }
 
     private void DebugShowMap(int size)
     {
         int index = 0;
         string str = "";
-        foreach (EnumElementCity item in _map)
+        foreach (KeyValuePair<Position, CellMap> kvp in _dictMap)
         {
             if (index == 0)
             {
                 str += '\n';
             }
 
-            switch (item)
+            switch (kvp.Value.CellType)
             {
                 case EnumElementCity.GROUND:
                     str += 'G'; break;
@@ -82,143 +99,183 @@ public class City : MonoBehaviour
         Debug.Log(str);
     }
 
-
-    private void GenerateVisualMap()
+    private void GeneratePlane(Transform parent, int scale, ElementCityParameter elementCityParameter)
     {
-        for (int x = 0; x < _map.GetLength(0); x++)
+        GameObject elementCity = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        elementCity.transform.parent = parent;
+        elementCity.transform.localScale = new Vector3(.1f * scale, .1f * scale, .1f * scale);
+        elementCity.transform.localPosition = Vector3.zero;
+        elementCity.GetComponent<MeshRenderer>().material = elementCityParameter.Material;
+    }
+
+    private GameObject GenerateCellGameObject(Vector3 position, string name)
+    {
+        GameObject cellObj = new GameObject(name, typeof(CellData));
+        cellObj.transform.position = position;
+        cellObj.transform.parent = gameObject.transform;
+
+        return cellObj;
+    }
+
+    private void GenerateVisualMap(int scale)
+    {
+        foreach (KeyValuePair<Position, CellMap> kvp in _dictMap)
         {
-            for (int y = 0; y < _map.GetLength(1); y++)
+            Vector3 obectPosition = new Vector3(kvp.Key.X * scale, 0, kvp.Key.Y * scale);
+
+            GameObject cellObj = GenerateCellGameObject(obectPosition, $"{kvp.Key.X},{kvp.Key.Y}");            
+            GameObject mesh = null;
+            ElementCityParameter param = null;
+
+            switch (kvp.Value.CellType)
             {
-                Vector3 obectPosition = new Vector3(x * _scale, 0, y * _scale);
+                case EnumElementCity.GROUND:
+                    param = _groundParameter;
+                    break;
+                case EnumElementCity.STREET:
+                    param = _streetParameter;
+                    //mesh = InstantiatePrefab(_streetParameter.Prefabs, cellObj.transform);
+                    //if (_streetParameter.UseCustomScale)
+                    //{
+                    //    mesh.transform.localScale = _streetParameter.Scale;
+                    //}                    
 
-                GameObject elementCity = GameObject.CreatePrimitive(PrimitiveType.Plane);
-                elementCity.transform.parent = gameObject.transform;
-                elementCity.transform.localScale = new Vector3(.1f * _scale, .1f * _scale, .1f * _scale);
-                elementCity.transform.position = obectPosition;
+                    break;
+                case EnumElementCity.HOUSE:
+                    param = _houseParameter;
+                    //mesh = InstantiatePrefab(_houseParameter.Prefabs, cellObj.transform, GetRotationForHouse(new Vector2Int(kvp.Key.X, kvp.Key.Y)));
+                    break;
+                case EnumElementCity.CORNER_HOUSE:
+                    param = _cornerHouseParameter;
+                    //Vector3 rot = GetRotationForCornerHouse(new Vector2Int(kvp.Key.X, kvp.Key.Y));
+                    //mesh = InstantiatePrefab(_cornerHouseParameter.Prefabs, cellObj.transform);
+                    //mesh.transform.LookAt(rot);
 
-                switch (_map[x, y])
+                    break;
+                case EnumElementCity.OBSTACLE:
+                    param = _obstacleParameter;
+                    //mesh = InstantiatePrefab(_obstacleParameter.Prefabs, cellObj.transform);
+
+                    //Transform graphics = null;
+                    //foreach (Transform item in mesh.transform)
+                    //{
+                    //    graphics = item;
+                    //}
+
+                    //int index = Random.Range(0, _obstacleParameter.Meshes.Length);
+                    //Instantiate(_obstacleParameter.Meshes[index], graphics);
+                    break;
+            }
+
+            //Generate Plane
+            if (param.GeneratePlane)
+            {
+                GeneratePlane(cellObj.transform, scale, param);
+            }
+
+            //Generate prefab
+            mesh = InstantiatePrefab(param.Prefabs, cellObj.transform);
+            if (param.UseCustomScale)
+            {
+                mesh.transform.localScale = param.Scale;
+            }
+
+            //Generate mesh child for prefab
+            if(param.Meshes.Length > 0)
+            {
+                Transform graphics = null;
+                foreach (Transform item in mesh.transform)
                 {
-                    case EnumElementCity.GROUND:
-                        elementCity.GetComponent<MeshRenderer>().material = _groundMat;
-                        break;
-                    case EnumElementCity.STREET:
-                        //elementCity.GetComponent<MeshRenderer>().material = _streetMat;
-                        DestroyImmediate(elementCity);
-                        GameObject road = InstantiatePrefab(roadPrefab, obectPosition, 0);
-                        road.transform.localScale = new Vector3(.1f * _scale, .1f * _scale, .1f * _scale);
-                        break;
-
-                    case EnumElementCity.OBSTACLE:
-                        elementCity.GetComponent<MeshRenderer>().material = _obstacleMat;
-
-                        GameObject obstacleInstance = InstantiatePrefab(_obstaclePrefab, obectPosition);
-
-                        Transform graphics = null;
-                        foreach (Transform item in obstacleInstance.transform)
-                        {
-                            graphics = item;
-                        }
-
-                        int index = Random.Range(0, _obstacleMeshes.Length);
-                        Instantiate(_obstacleMeshes[index], graphics);
-                        break;
-
-                    case EnumElementCity.HOUSE:
-                        elementCity.GetComponent<MeshRenderer>().material = _houseMat;
-
-                        GameObject houseInstance = InstantiatePrefab(_housePrefabs, obectPosition, GetRotationForHouse(new Vector2Int(x, y)));
-                        if (x == _map.GetLength(0) / 2 && y == _map.GetLength(1) / 2)
-                        {
-                            center = houseInstance;
-                        }
-                        break;
-
-                    case EnumElementCity.CORNER_HOUSE:
-                        elementCity.GetComponent<MeshRenderer>().material = _cornerHouseMat;
-
-                        Vector3 rot = GetRotationForCornerHouse(new Vector2Int(x, y));
-
-                        GameObject cornerHouseInstance = InstantiatePrefab(_cornerHousePrefabs, obectPosition);
-                        cornerHouseInstance.transform.LookAt(rot);
-                        break;
+                    graphics = item;
                 }
+
+                int index = Random.Range(0, param.Meshes.Length);
+                Instantiate(_obstacleParameter.Meshes[index], graphics);
             }
+            kvp.Value.Mesh = mesh;
+
+            CellData mapData = cellObj.GetComponent<CellData>();
+            mapData.CellMap = kvp.Value;
         }
     }
 
-    private GameObject InstantiatePrefab(GameObject[] prefabs, Vector3 pos, float rotationAngle = 0f)
+    private GameObject InstantiatePrefab(GameObject[] prefabs, Transform parent, float rotationAngle = 0f)
     {
+        if (prefabs.Length == 0) return null;
         int index = Random.Range(0, prefabs.Length);
-        return InstantiatePrefab(prefabs[index], pos, rotationAngle);
+        return InstantiatePrefab(prefabs[index], parent, rotationAngle);
     }
 
-    private GameObject InstantiatePrefab(GameObject prefabs, Vector3 pos, float rotationAngle = 0f)
+    private GameObject InstantiatePrefab(GameObject prefabs, Transform parent, float rotationAngle = 0f)
     {
-        return Instantiate(prefabs, pos, Quaternion.AngleAxis(rotationAngle, Vector3.up), gameObject.transform);
+        if (prefabs == null) return null;
+        GameObject instance = Instantiate(prefabs, Vector3.zero, Quaternion.AngleAxis(rotationAngle, Vector3.up), parent);
+        instance.transform.localPosition = Vector3.zero;
+        return instance;
     }
 
-    private Vector3 GetRotationForCornerHouse(Vector2Int coord)
-    {
-        List<Vector2Int> coordinates = CityGenerator.GetCroos(_map, coord);
+    //private Vector3 GetRotationForCornerHouse(Vector2Int coord)
+    //{
+    //    List<Vector2Int> coordinates = CityGenerator.GetCroos(_map, coord);
 
-        List<Vector2Int> coordinatesStreet = new List<Vector2Int>();
+    //    List<Vector2Int> coordinatesStreet = new List<Vector2Int>();
 
-        foreach (Vector2Int coordinate in coordinates)
-        {
-            if (_map[coordinate.x, coordinate.y] == EnumElementCity.STREET)
-            {
-                coordinatesStreet?.Add(coordinate);
-            }
-        }
+    //    foreach (Vector2Int coordinate in coordinates)
+    //    {
+    //        if (_map[coordinate.x, coordinate.y] == EnumElementCity.STREET)
+    //        {
+    //            coordinatesStreet?.Add(coordinate);
+    //        }
+    //    }
 
-        switch (coordinatesStreet.Count)
-        {
-            case 2:
-                Vector2Int offset = coordinatesStreet[1] - coordinatesStreet[0];
-                Vector2Int coorner = coord + (coordinatesStreet[1] - coord) + (coordinatesStreet[0] - coord);
-                return new Vector3(coorner.x, 0, coorner.y);
-            default:
-                return new Vector3(coord.x, 0, coord.y);
-        }
-    }
+    //    switch (coordinatesStreet.Count)
+    //    {
+    //        case 2:
+    //            Vector2Int offset = coordinatesStreet[1] - coordinatesStreet[0];
+    //            Vector2Int coorner = coord + (coordinatesStreet[1] - coord) + (coordinatesStreet[0] - coord);
+    //            return new Vector3(coorner.x, 0, coorner.y);
+    //        default:
+    //            return new Vector3(coord.x, 0, coord.y);
+    //    }
+    //}
 
-    private float GetRotationForHouse(Vector2Int coord)
-    {
-        if (CityGenerator.InRangeMap(coord.x + 1, _width))
-        {
-            if (_map[coord.x + 1, coord.y] == EnumElementCity.STREET)
-            {
-                return 180f;
-            }
-        }
-
-
-        if (CityGenerator.InRangeMap(coord.x - 1, _width))
-        {
-            if (_map[coord.x - 1, coord.y] == EnumElementCity.STREET)
-            {
-                return 0f;
-            }
-        }
+    //private float GetRotationForHouse(Vector2Int coord)
+    //{
+    //    if (CityGenerator.InRangeMap(coord.x + 1, _size))
+    //    {
+    //        if (_map[coord.x + 1, coord.y] == EnumElementCity.STREET)
+    //        {
+    //            return 180f;
+    //        }
+    //    }
 
 
-        if (CityGenerator.InRangeMap(coord.y + 1, _height))
-        {
-            if (_map[coord.x, coord.y + 1] == EnumElementCity.STREET)
-            {
-                return 90f;
-            }
-        }
+    //    if (CityGenerator.InRangeMap(coord.x - 1, _size))
+    //    {
+    //        if (_map[coord.x - 1, coord.y] == EnumElementCity.STREET)
+    //        {
+    //            return 0f;
+    //        }
+    //    }
 
-        if (CityGenerator.InRangeMap(coord.y - 1, _height))
-        {
-            if (_map[coord.x, coord.y - 1] == EnumElementCity.STREET)
-            {
-                return -90;
-            }
-        }
 
-        return 0f;
-    }
+    //    if (CityGenerator.InRangeMap(coord.y + 1, _size))
+    //    {
+    //        if (_map[coord.x, coord.y + 1] == EnumElementCity.STREET)
+    //        {
+    //            return 90f;
+    //        }
+    //    }
+
+    //    if (CityGenerator.InRangeMap(coord.y - 1, _size))
+    //    {
+    //        if (_map[coord.x, coord.y - 1] == EnumElementCity.STREET)
+    //        {
+    //            return -90;
+    //        }
+    //    }
+
+    //    return 0f;
+    //}
 
 }
