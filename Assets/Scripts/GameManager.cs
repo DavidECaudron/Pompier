@@ -4,12 +4,14 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public static CityFireManager InstanceCityFireManager { get; private set; }
     public static readonly float MAX_DISTANCE_PLAYER_TRUC = 100;
 
     [SerializeField] private GameObject spawnTruck;
     [SerializeField] private GameObject truckPrefab;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject city;
+
     private GameObject truck = null;
     private List<GameObject> players = new List<GameObject>();
 
@@ -22,10 +24,12 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        CityFireManager.Instance = GetComponent<CityFireManager>();
     }
 
     private void Start()
     {
+        Debug.Log("Awake Start");
         if(truck == null)
         {
             truck = Instantiate(truckPrefab, spawnTruck.transform.position, Quaternion.Euler(0,0,0));
@@ -38,6 +42,8 @@ public class GameManager : MonoBehaviour
         players.Add(Instantiate(playerPrefab, pos, Quaternion.Euler(0,0,0)));
         
         players[0].GetComponent<PlayerController>().truck = truck;
+
+        //CityFireManager.Instance.StartFiref();
     }
 
     private void Update()

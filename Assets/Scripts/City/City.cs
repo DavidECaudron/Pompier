@@ -45,6 +45,11 @@ public class City : MonoBehaviour
         }
     }
 
+    public EnumElementCity[,] GetMap()
+    {
+        return this._map;
+    }
+
     private void DebugShowMap(int size)
     {
         int index = 0;
@@ -99,9 +104,8 @@ public class City : MonoBehaviour
                     case EnumElementCity.STREET:
                         //elementCity.GetComponent<MeshRenderer>().material = _streetMat;
                         DestroyImmediate(elementCity);
-                        GameObject road = Instantiate(roadPrefab, transform.parent);        
+                        GameObject road = InstantiatePrefab(roadPrefab, obectPosition, 0);
                         road.transform.localScale = new Vector3(.1f * _scale, .1f * _scale, .1f * _scale);
-                        road.transform.position = obectPosition;
                         break;
 
                     case EnumElementCity.OBSTACLE:
