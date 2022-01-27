@@ -24,14 +24,7 @@ public class City : MonoBehaviour
 
     private void Start()
     {
-        if(_dictMap == null)
-        {
-            _dictMap = new Dictionary<Position, CellMap>();
-
-            //charger le dico avec les objets de la map
-
-            //boucler dans chaque enfant, et pou chaque enfant récupérer ses enfant pour les charger dans cellmap du dico
-        }
+        
     }
 
     public void GenerateCity()
@@ -62,17 +55,13 @@ public class City : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
-    public void SetMap()
-    {
-        this._map = new EnumElementCity[_width,_height];
-    }
-
-    public EnumElementCity[,] GetMap()
-=======
     public Dictionary<Position, CellMap> GetMap()
->>>>>>> 0bee3c62e809d667120f8aaa21b3bb2a47ddd08e
     {
+        if(_dictMap == null)
+        {
+            _dictMap = new Dictionary<Position, CellMap>();
+        }
+
         return _dictMap;
     }
 

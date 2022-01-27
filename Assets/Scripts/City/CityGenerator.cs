@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CityGenerator
 {
@@ -9,7 +10,7 @@ public class CityGenerator
 
         map[size / 2, size / 2] = EnumElementCity.GROUND;
 
-        CityGenerator.GenerateStreets(map, new Vector2Int(size / 2, size / 2), size);
+        CityGenerator.GenerateRandomStreets(map, new Vector2Int(size / 2, size / 2), size);
         CityGenerator.GenerateHouses(map, size, size);
         CityGenerator.GenerateCornerHouses(map, size, size);
         CityGenerator.GenerateObstacle(map, size, size);
@@ -42,6 +43,34 @@ public class CityGenerator
             map[center.x, index] = EnumElementCity.STREET;
             map[index, center.y] = EnumElementCity.STREET;
         }
+    }
+
+    private static void GenerateRandomStreets(EnumElementCity[,] map, Vector2Int center, int size)
+    {
+        var position = 0;
+        do
+        {
+            position = Random.Range(position + 1, size - 1);
+            
+            for (int i = 0; i < size; i++)
+            {
+                map[position, i] = EnumElementCity.STREET;
+            }
+            position++;
+        }while(position + 1 < size -1);
+
+        
+        position = 0;
+        do
+        {
+            position = Random.Range(position + 1, size - 1);
+            
+            for (int i = 0; i < size; i++)
+            {
+                map[i, position] = EnumElementCity.STREET;
+            }
+            position++;
+        }while(position + 1 < size -1);
     }
 
     private static void GenerateHouses(EnumElementCity[,] map, int width, int height)
@@ -80,6 +109,7 @@ public class CityGenerator
 
     private static void GenerateCornerHouses(EnumElementCity[,] map, int width, int height)
     {
+        List<EnumElementCity> enums = new List<EnumElementCity>(){ EnumElementCity.STREET, EnumElementCity.OBSTACLE};
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -93,13 +123,12 @@ public class CityGenerator
 
                 if (CityGenerator.InRangeMap(y + 1, height) && CityGenerator.InRangeMap(y - 1, height))
                 {
-                    axisY = map[x, y - 1] == EnumElementCity.STREET || map[x, y + 1] == EnumElementCity.STREET;
+                    axisY = enums.Contains(map[x, y - 1]) || enums.Contains(map[x, y + 1]);
                 }
-
 
                 if (CityGenerator.InRangeMap(x + 1, width) && CityGenerator.InRangeMap(x - 1, width))
                 {
-                    axisX = map[x - 1, y] == EnumElementCity.STREET || map[x + 1, y] == EnumElementCity.STREET;
+                    axisX = enums.Contains(map[x - 1, y])|| enums.Contains(map[x + 1, y]);
                 }
 
                 if (axisX && axisY)

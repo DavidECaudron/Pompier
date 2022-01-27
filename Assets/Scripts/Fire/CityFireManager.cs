@@ -50,7 +50,7 @@ public class CityFireManager : MonoBehaviour
         _enable = value;
     }
 
-    public void StartFiref()
+    public void StartFire()
     {
         StartCoroutine(FireTimeOut());
     }
