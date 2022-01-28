@@ -20,6 +20,7 @@ public class CityGenerator
 
     public static Dictionary<Position, CellMap> GenerateMap(int size)
     {
+        Debug.Log("sdsd");
         EnumElementCity[,] map = GeneratorMap(size);
         Dictionary<Position, CellMap> dict = new Dictionary<Position, CellMap>();
 
@@ -36,15 +37,6 @@ public class CityGenerator
         return dict;
     }
 
-    private static void GenerateStreets(EnumElementCity[,] map, Vector2Int center, int width)
-    {
-        for (int index = 0; index < width; index++)
-        {
-            map[center.x, index] = EnumElementCity.STREET;
-            map[index, center.y] = EnumElementCity.STREET;
-        }
-    }
-
     private static void GenerateRandomStreets(EnumElementCity[,] map, Vector2Int center, int size)
     {
         var position = 0;
@@ -58,7 +50,6 @@ public class CityGenerator
             }
             position++;
         }while(position + 1 < size -1);
-
         
         position = 0;
         do
