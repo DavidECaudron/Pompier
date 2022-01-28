@@ -4,5 +4,6 @@ public enum EnumElementCity
     STREET = 1,  
     HOUSE = 2,
     CORNER_HOUSE = 3,
-    OBSTACLE = 4
+    OBSTACLE = 4,
+    DECORATIVE_HOUSE = 5
 }

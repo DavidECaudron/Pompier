@@ -6,6 +6,7 @@ public class City : MonoBehaviour
 {
     [Header("Parameters")]
     [SerializeField] private ElementCityParameter _houseParameter;
+    [SerializeField] private ElementCityParameter _decorativeHouseParameter;
     [SerializeField] private ElementCityParameter _cornerHouseParameter;
     [SerializeField] private ElementCityParameter _streetParameter;
     [SerializeField] private ElementCityParameter _groundParameter;
@@ -20,18 +21,6 @@ public class City : MonoBehaviour
     public int Size
     {
         get { return _cityParameter.Size; }
-    }
-
-    private void Start()
-    {
-        if(_dictMap == null)
-        {
-            _dictMap = new Dictionary<Position, CellMap>();
-
-            //charger le dico avec les objets de la map
-
-            //boucler dans chaque enfant, et pou chaque enfant récupérer ses enfant pour les charger dans cellmap du dico
-        }
     }
 
     public void GenerateCity()
@@ -62,17 +51,21 @@ public class City : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
-    public void SetMap()
+    private void LoadDictMap()
     {
-        this._map = new EnumElementCity[_width,_height];
+        _dictMap = new Dictionary<Position, CellMap>();
+
+        //charger le dico avec les objets de la map
+
+        //boucler dans chaque enfant, et pou chaque enfant récupérer ses enfant pour les charger dans cellmap du dico
     }
 
-    public EnumElementCity[,] GetMap()
-=======
     public Dictionary<Position, CellMap> GetMap()
->>>>>>> 0bee3c62e809d667120f8aaa21b3bb2a47ddd08e
     {
+        if(_dictMap == null)
+        {
+            LoadDictMap();
+        }
         return _dictMap;
     }
 
@@ -142,37 +135,19 @@ public class City : MonoBehaviour
                     param = _groundParameter;
                     break;
                 case EnumElementCity.STREET:
-                    param = _streetParameter;
-                    //mesh = InstantiatePrefab(_streetParameter.Prefabs, cellObj.transform);
-                    //if (_streetParameter.UseCustomScale)
-                    //{
-                    //    mesh.transform.localScale = _streetParameter.Scale;
-                    //}                    
-
+                    param = _streetParameter;     
                     break;
-                case EnumElementCity.HOUSE:
+                case EnumElementCity.HOUSE :
                     param = _houseParameter;
-                    //mesh = InstantiatePrefab(_houseParameter.Prefabs, cellObj.transform, GetRotationForHouse(new Vector2Int(kvp.Key.X, kvp.Key.Y)));
+                    break;
+                case EnumElementCity.DECORATIVE_HOUSE:
+                    param = _decorativeHouseParameter;
                     break;
                 case EnumElementCity.CORNER_HOUSE:
                     param = _cornerHouseParameter;
-                    //Vector3 rot = GetRotationForCornerHouse(new Vector2Int(kvp.Key.X, kvp.Key.Y));
-                    //mesh = InstantiatePrefab(_cornerHouseParameter.Prefabs, cellObj.transform);
-                    //mesh.transform.LookAt(rot);
-
                     break;
                 case EnumElementCity.OBSTACLE:
                     param = _obstacleParameter;
-                    //mesh = InstantiatePrefab(_obstacleParameter.Prefabs, cellObj.transform);
-
-                    //Transform graphics = null;
-                    //foreach (Transform item in mesh.transform)
-                    //{
-                    //    graphics = item;
-                    //}
-
-                    //int index = Random.Range(0, _obstacleParameter.Meshes.Length);
-                    //Instantiate(_obstacleParameter.Meshes[index], graphics);
                     break;
             }
 

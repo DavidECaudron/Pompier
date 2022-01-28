@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         CityFireManager.Instance = GetComponent<CityFireManager>();
-        city.GetComponent<City>().SetMap();
     }
 
     private void Start()

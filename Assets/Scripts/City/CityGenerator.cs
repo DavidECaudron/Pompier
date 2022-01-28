@@ -13,6 +13,7 @@ public class CityGenerator
         CityGenerator.GenerateHouses(map, size, size);
         CityGenerator.GenerateCornerHouses(map, size, size);
         CityGenerator.GenerateObstacle(map, size, size);
+        CityGenerator.GenerateDecorativeHouse(map, size, size);        
 
         return map;
     }
@@ -129,6 +130,29 @@ public class CityGenerator
                     }
 
                     if (i < 2) map[x, y] = EnumElementCity.OBSTACLE;
+                }
+            }
+        }
+    }
+
+    private static void GenerateDecorativeHouse(EnumElementCity[,] map, int width, int height)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                EnumElementCity current = map[x, y];
+                if (current == EnumElementCity.OBSTACLE)
+                {
+                    List<Vector2Int> positions = GetCroos(map, new Vector2Int(x, y));
+
+                    foreach (Vector2Int pos in positions)
+                    {
+                        if (map[pos.x, pos.y] == EnumElementCity.HOUSE)
+                        {
+                            map[pos.x, pos.y] = EnumElementCity.DECORATIVE_HOUSE;
+                        }
+                    }
                 }
             }
         }
