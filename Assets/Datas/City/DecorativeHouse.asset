@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6739be971d055a4ca60230d7c8e55a0, type: 3}
   m_Name: DecorativeHouse
   m_EditorClassIdentifier: 
-  Material: {fileID: 2100000, guid: 80283d4c5627b0046867a1bdeb2b73ad, type: 2}
+  Material: {fileID: 2100000, guid: 17d4ee98051cc9e499637d19c5e7eb1b, type: 2}
   Prefabs:
   - {fileID: 8537324661849899433, guid: 4c9b5617dfe3f0f45aa450b1226c8cba, type: 3}
   Meshes: []
