@@ -13,11 +13,13 @@ public class CityGeneratorEditor : Editor
 
         if (GUILayout.Button("Generate"))
         {
+            Debug.ClearDeveloperConsole();
             mapPreview.GenerateCity();
         }
 
         if (GUILayout.Button("Delete"))
         {
+            Debug.ClearDeveloperConsole();
             mapPreview.ResetCity();
         }
     }
