@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         
         players[0].GetComponent<PlayerController>().truck = truck;
 
-        CityFireManager.Instance.StartFiref();
+        //CityFireManager.Instance.StartFiref();
     }
 
     private void Update()

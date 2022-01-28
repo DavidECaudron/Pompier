@@ -56,9 +56,13 @@ public class City : MonoBehaviour
     {
         _dictMap = new Dictionary<Position, CellMap>();
 
-        //charger le dico avec les objets de la map
+        foreach (Transform child in gameObject.transform)
+        {
+            CellData data = child.GetComponent<CellData>();
+            if (data == null) continue;
 
-        //boucler dans chaque enfant, et pou chaque enfant récupérer ses enfant pour les charger dans cellmap du dico
+            _dictMap.Add(data.Position, data.CellMap);
+        }
     }
 
     public Dictionary<Position, CellMap> GetMap()
@@ -113,9 +117,11 @@ public class City : MonoBehaviour
 
     private GameObject GenerateCellGameObject(Vector3 position, string name)
     {
-        GameObject cellObj = new GameObject(name, typeof(CellData));
+        GameObject cellObj = new GameObject(name);
         cellObj.transform.position = position;
         cellObj.transform.parent = gameObject.transform;
+
+        cellObj.AddComponent<CellData>();
 
         return cellObj;
     }
@@ -245,6 +251,7 @@ public class City : MonoBehaviour
 
             CellData mapData = cellObj.GetComponent<CellData>();
             mapData.CellMap = kvp.Value;
+            mapData.Position = kvp.Key;
         }
     }
 
