@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _houseParameter: {fileID: 11400000, guid: addcb1087279e684896278b8c90be592, type: 2}
+  _decorativeHouseParameter: {fileID: 11400000, guid: 9ed665dba663c684086cd8c9d04621cb, type: 2}
   _cornerHouseParameter: {fileID: 11400000, guid: 8d71f2a539b68d74fba5ac4e4cc3e90a, type: 2}
   _streetParameter: {fileID: 11400000, guid: 932c5926b191e8f448531910fbe46669, type: 2}
   _groundParameter: {fileID: 11400000, guid: 432ae5ea06e9bd84e88616024801ae56, type: 2}
