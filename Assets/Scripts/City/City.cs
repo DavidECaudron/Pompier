@@ -14,8 +14,10 @@ public class City : MonoBehaviour
 
     [Header("Map Size")]
     [SerializeField] private CityParameter _cityParameter;
+    [SerializeField] public GameObject prefabHouseFire;
 
     private Dictionary<Position, CellMap> _dictMap;
+    private Dictionary<Position, CellData> houses = new Dictionary<Position, CellData>();
 
     public int Size
     {
@@ -24,7 +26,21 @@ public class City : MonoBehaviour
 
     private void Start()
     {
-        
+        foreach (var cellData in GetComponentsInChildren<CellData>())
+        {
+            if(cellData.CellMap.CellType == EnumElementCity.HOUSE ||  cellData.CellMap.CellType == EnumElementCity.CORNER_HOUSE)
+            {
+                houses[cellData.CellMap.position] = cellData;
+                cellData.gameObject.AddComponent<HouseFire>();
+            }
+        }
+
+        CityFireManager.Instance.SetHouses(); 
+    }
+
+    public Dictionary<Position, CellData> GetHouses()
+    {
+        return houses;
     }
 
     public void GenerateCity()
@@ -111,7 +127,6 @@ public class City : MonoBehaviour
         GameObject cellObj = new GameObject(name, typeof(CellData));
         cellObj.transform.position = position;
         cellObj.transform.parent = gameObject.transform;
-
         return cellObj;
     }
 
@@ -194,6 +209,7 @@ public class City : MonoBehaviour
 
             CellData mapData = cellObj.GetComponent<CellData>();
             mapData.CellMap = kvp.Value;
+            mapData.CellMap.position = kvp.Key;
         }
     }
 

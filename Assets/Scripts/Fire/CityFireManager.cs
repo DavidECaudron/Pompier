@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CityFireManager : MonoBehaviour
 {
@@ -14,7 +15,13 @@ public class CityFireManager : MonoBehaviour
     [SerializeField] private City city;
     
     [SerializeField]
-    private List<Vector2Int> housesFired = new List<Vector2Int>();
+    private List<Position> housesFired = new List<Position>();
+    private Dictionary<Position, CellData> housesLeft;
+
+    public void SetHouses()
+    {
+        housesLeft = GameManager.Instance.city.GetComponent<City>().GetHouses();
+    }
 
     private IEnumerator FireTimeOut()
     {
@@ -28,21 +35,21 @@ public class CityFireManager : MonoBehaviour
         }
     }
 
-    private void newHouseFired()
+    private void newHouseFired() 
     {
-        var map = city.GetMap();
-    
-        int x = city.Size;
-        int y = city.Size;
-
-        while(housesFired.Contains(new Vector2Int(x, y)))
+        if(housesLeft != null)
         {
-            x = Random.Range(0, city.Size);
-            y = Random.Range(0, city.Size);
-        }
+            var housesList = housesLeft.ToList();
+            int x = city.Size;
+            int y = city.Size;
 
-        housesFired.Add(new Vector2Int(x, y));
-        Debug.Log("Fire");
+            var index = Random.Range(0, housesList.Count);
+
+            var nextHouseFired = housesList[index];
+
+            housesFired.Add(nextHouseFired.Key);
+            GameManager.Instance.city.GetComponent<City>().GetHouses()[nextHouseFired.Key].GetComponent<HouseFire>().StartFire();
+        }
     }
 
     public void setEnable(bool value)

@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject spawnTruck;
     [SerializeField] private GameObject truckPrefab;
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject city;
+    [SerializeField] public GameObject city;
 
     private GameObject truck = null;
     private List<GameObject> players = new List<GameObject>();
